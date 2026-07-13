@@ -1,95 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Personal Website</title>
-  
-  <style>
-    /* Global styles */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f7f6;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saravana Vel S | Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #212529;
+            --card-bg: #f8f9fa;
+            --hero-bg: #f1f5f9;
+        }
 
-    /* Header styling */
-    header {
-      background-color: #2c3e50;
-      color: white;
-      width: 100%;
-      text-align: center;
-      padding: 2rem 0;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #f8f9fa;
+            --card-bg: #1e1e1e;
+            --hero-bg: #1a1a2e;
+        }
 
-    /* Main container styling */
-    .container {
-      background: white;
-      padding: 2rem;
-      margin-top: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      max-width: 500px;
-      width: 90%;
-      text-align: center;
-    }
+        body {
+            padding-top: 70px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    /* Interactive button styling */
-    button {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
+        .hero-card {
+            background-color: var(--hero-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
 
-    button:hover {
-      background-color: #2980b9;
-    }
+        .profile-img {
+            width: 170px;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #0d6efd;
+        }
 
-    /* Message box styling */
-    #message {
-      margin-top: 1.5rem;
-      font-weight: bold;
-      color: #27ae60;
-    }
-  </style>
+        .card {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        /* Hide event section by default */
+        #eventSection {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>Welcome to My Website</h1>
-    <p>Built with HTML, CSS, and JavaScript</p>
-  </header>
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html"><i class="fa-solid fa-microchip me-2"></i>IoT Hub</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Top Right Menu Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active fw-bold" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="esp32.html">ESP32 Connect</a></li>
+                    <li class="nav-item"><a class="nav-link" href="automation.html">Automation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-  <div class="container">
-    <h2>About Me</h2>
-    <p>This is a custom website built for my own personal projects and ideas.</p>
-    
-    <button id="clickBtn">Click Me!</button>
-    <p id="message"></p>
-  </div>
+    <!-- HOME CONTENT -->
+    <div class="container my-4">
+        <div class="hero-card">
+            <div class="row align-items-center">
+                <!-- Profile Image -->
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    <img src="profile.jpg" alt="Saravana Vel S" class="profile-img mb-3" onerror="this.src='https://via.placeholder.com/170?text=Profile+Pic'">
+                    
+                    <!-- Dark Mode Toggle Button -->
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm mt-2" onclick="toggleTheme()">
+                            <i class="fa-solid fa-moon me-2" id="themeIcon"></i><span id="themeText">Dark Mode</span>
+                        </button>
+                    </div>
+                </div>
 
-  <script>
-    // Grab elements from the page
-    const button = document.getElementById('clickBtn');
-    const message = document.getElementById('message');
+                <!-- Personal Details & About Me -->
+                <div class="col-md-8">
+                    <h1 class="fw-bold mb-1">Saravana Vel S</h1>
+                    <h5 class="text-primary mb-3"><i class="fa-solid fa-graduation-cap me-2"></i>EEE Student @ Kongu Engineering College</h5>
+                    
+                    <!-- 10-15 Lines About You -->
+                    <p class="lh-base">
+                        Welcome to my personal portfolio! I am an enthusiastic Electrical and Electronics Engineering (EEE) student deeply interested in embedded hardware, smart automation systems, and Internet of Things (IoT) technologies.
+                        <br><br>
+                        Currently, I serve as a <strong>Teacher in the Young Generation Forum of India</strong>, where I actively mentor young minds, share practical knowledge, and encourage innovation in tech and education. My technical expertise spans microcontrollers like ESP32, hardware-software integration, and automated control applications. I continuously strive to build real-world IoT projects that bridge the gap between engineering theory and practical execution.
+                    </p>
 
-    // Add a click event listener
-    button.addEventListener('click', () => {
-      message.textContent = "Hello! You just triggered a JavaScript interaction. 🎉";
-    });
-  </script>
+                    <!-- Contact Buttons -->
+                    <div class="mt-4 d-flex flex-wrap gap-2">
+                        <a href="https://www.linkedin.com/in/saravana-vel-s-b610493a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="btn btn-primary">
+                            <i class="fa-brands fa-linkedin me-2"></i>LinkedIn
+                        </a>
+                        <a href="mailto:saravanavel0820@gmail.com" class="btn btn-outline-danger">
+                            <i class="fa-solid fa-envelope me-2"></i>saravanavel0820@gmail.com
+                        </a>
+                        <a href="tel:+919489924936" class="btn btn-outline-success">
+                            <i class="fa-solid fa-phone me-2"></i>+91 9489924936
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- UPCOMING EVENTS BUTTON -->
+        <div class="text-center my-5">
+            <button class="btn btn-warning btn-lg fw-bold shadow" onclick="showEvents()">
+                <i class="fa-solid fa-calendar-star me-2"></i>Show Upcoming Events
+            </button>
+        </div>
+
+        <!-- HIDDEN UPCOMING EVENT DISPLAY -->
+        <div id="eventSection" class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow border-warning">
+                    <div class="card-header bg-warning text-dark fw-bold text-center">
+                        <i class="fa-solid fa-rocket me-2"></i>Upcoming Educational Visit
+                    </div>
+                    <div class="card-body text-center p-4">
+                        <h4 class="card-title fw-bold">July 17 – 19 Visit @ ISRO & DRDO Lab</h4>
+                        <p class="card-text text-muted mt-2">
+                            An industrial research trip to observe advanced space technologies, satellite communications, defense electronics, and laboratory systems at ISRO and DRDO facilities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle Dark Mode
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById("themeIcon");
+            const text = document.getElementById("themeText");
+            
+            if (body.getAttribute("data-theme") === "dark") {
+                body.removeAttribute("data-theme");
+                icon.className = "fa-solid fa-moon me-2";
+                text.innerText = "Dark Mode";
+            } else {
+                body.setAttribute("data-theme", "dark");
+                icon.className = "fa-solid fa-sun me-2";
+                text.innerText = "Light Mode";
+            }
+        }
+
+        // Show Event when button is clicked
+        function showEvents() {
+            const eventDiv = document.getElementById("eventSection");
+            if (eventDiv.style.display === "block") {
+                eventDiv.style.display = "none";
+            } else {
+                eventDiv.style.display = "block";
+                eventDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
 </body>
 </html>
