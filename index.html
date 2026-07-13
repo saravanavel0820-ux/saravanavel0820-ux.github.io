@@ -3,179 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saravana Vel S | Home</title>
+    <title>Saravana Vel S | Portfolio & IoT Hub</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-color: #ffffff;
-            --text-color: #212529;
-            --card-bg: #f8f9fa;
-            --hero-bg: #f1f5f9;
+            --bg-color: #0b0f19;
+            --text-color: #f8fafc;
+            --card-bg: rgba(23, 31, 51, 0.65);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-gradient: linear-gradient(135deg, #3b82f6, #9333ea, #e11d48);
+            --primary-accent: #3b82f6;
+            --subtext-color: #94a3b8;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --nav-bg: rgba(11, 15, 25, 0.85);
         }
 
-        [data-theme="dark"] {
-            --bg-color: #121212;
-            --text-color: #f8f9fa;
-            --card-bg: #1e1e1e;
-            --hero-bg: #1a1a2e;
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --text-color: #111827;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: rgba(0, 0, 0, 0.06);
+            --subtext-color: #4b5563;
+            --nav-bg: rgba(241, 245, 249, 0.9);
         }
 
         body {
-            padding-top: 70px;
+            padding-top: 90px;
             background-color: var(--bg-color);
             color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .hero-card {
-            background-color: var(--hero-bg);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        h1, h2, h3, .nav-link { font-family: var(--font-heading); }
+
+        /* Custom Navbar */
+        .custom-navbar {
+            background: var(--nav-bg);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 15px 0;
         }
 
+        .nav-link { color: var(--subtext-color) !important; transition: 0.3s; }
+        .nav-link.active, .nav-link:hover { color: var(--primary-accent) !important; }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+        }
+
+        /* Profile Image */
         .profile-img {
-            width: 170px;
-            height: 170px;
+            width: 190px; height: 190px;
             object-fit: cover;
             border-radius: 50%;
-            border: 4px solid #0d6efd;
+            border: 4px solid transparent;
+            background: var(--accent-gradient) border-box;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.35);
         }
 
-        .card {
-            background-color: var(--card-bg);
+        /* Gradient Text */
+        .text-gradient {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Contact Pills */
+        .contact-pill {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex; align-items: center; gap: 8px;
         }
 
-        /* Hide event section by default */
+        .contact-pill:hover {
+            transform: translateY(-3px);
+            color: var(--primary-accent); border-color: var(--primary-accent);
+        }
+
+        /* Project Cards */
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 25px;
+            transition: 0.3s;
+        }
+        .project-card:hover { transform: translateY(-5px); border-color: var(--primary-accent); }
+
+        /* Hidden Event Section Styling at TOP */
         #eventSection {
             display: none;
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .event-banner {
+            background: var(--accent-gradient);
+            border-radius: 24px;
+            padding: 3px;
+        }
+
+        .event-banner-inner {
+            background: var(--bg-color);
+            border-radius: 21px;
+            padding: 30px;
         }
     </style>
 </head>
 <body>
 
     <!-- TOP NAVIGATION BAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html"><i class="fa-solid fa-microchip me-2"></i>IoT Hub</a>
+            <a class="navbar-brand fw-bold text-gradient fs-3" href="index.html">
+                <i class="fa-solid fa-microchip me-2"></i>IoT Hub
+            </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
-            <!-- Top Right Menu Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link active fw-bold" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="esp32.html">ESP32 Connect</a></li>
-                    <li class="nav-item"><a class="nav-link" href="automation.html">Automation</a></li>
+                <ul class="navbar-nav ms-auto align-items-center gap-3">
+                    <li class="nav-item"><a class="nav-link fw-bold active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link fw-bold" href="esp32.html">ESP32 Connect</a></li>
+                    <li class="nav-item"><a class="nav-link fw-bold" href="automation.html">Automation</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="toggleTheme()">
+                            <i class="fa-solid fa-moon me-1" id="themeIcon"></i> <span id="themeText">Dark</span>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- HOME CONTENT -->
+    <!-- MAIN CONTAINER -->
     <div class="container my-4">
-        <div class="hero-card">
-            <div class="row align-items-center">
-                <!-- Profile Image -->
-                <div class="col-md-4 text-center mb-4 mb-md-0">
-                    <img src="profile.jpg" alt="Saravana Vel S" class="profile-img mb-3" onerror="this.src='https://via.placeholder.com/170?text=Profile+Pic'">
-                    
-                    <!-- Dark Mode Toggle Button -->
-                    <div>
-                        <button class="btn btn-outline-primary btn-sm mt-2" onclick="toggleTheme()">
-                            <i class="fa-solid fa-moon me-2" id="themeIcon"></i><span id="themeText">Dark Mode</span>
-                        </button>
-                    </div>
-                </div>
 
-                <!-- Personal Details & About Me -->
-                <div class="col-md-8">
-                    <h1 class="fw-bold mb-1">Saravana Vel S</h1>
-                    <h5 class="text-primary mb-3"><i class="fa-solid fa-graduation-cap me-2"></i>EEE Student @ Kongu Engineering College</h5>
+        <!-- HERO / ABOUT ME SECTION -->
+        <div class="glass-card mb-4">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-center mb-4 mb-lg-0">
+                    <img src="profile.jpg" alt="Saravana Vel S" class="profile-img" onerror="this.src='https://via.placeholder.com/190?text=Profile+Pic'">
+                </div>
+                <div class="col-lg-8">
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+                        <i class="fa-solid fa-graduation-cap me-1"></i> EEE & IoT Engineer
+                    </span>
+                    <h1 class="display-4 fw-extrabold mb-1">Saravana Vel S</h1>
+                    <h4 class="text-gradient fw-bold mb-3">Kongu Engineering College</h4>
                     
-                    <!-- 10-15 Lines About You -->
-                    <p class="lh-base">
-                        Welcome to my personal portfolio! I am an enthusiastic Electrical and Electronics Engineering (EEE) student deeply interested in embedded hardware, smart automation systems, and Internet of Things (IoT) technologies.
+                    <p class="lh-lg" style="color: var(--subtext-color);">
+                        Welcome to my website! I am an Electrical and Electronics Engineering (EEE) student passionate about microcontrollers, embedded systems, smart hardware automation, and Internet of Things (IoT) technologies.
                         <br><br>
-                        Currently, I serve as a <strong>Teacher in the Young Generation Forum of India</strong>, where I actively mentor young minds, share practical knowledge, and encourage innovation in tech and education. My technical expertise spans microcontrollers like ESP32, hardware-software integration, and automated control applications. I continuously strive to build real-world IoT projects that bridge the gap between engineering theory and practical execution.
+                        I proudly serve as a <strong>Teacher in the Young Generation Forum of India</strong> (<a href="https://ygforumindia.com" target="_blank" class="text-primary text-decoration-none fw-semibold">ygforumindia.com <i class="fa-solid fa-arrow-up-right-from-square fs-6"></i></a>), dedicated to guiding students through practical STEM education, technological curiosity, and hands-on project building.
                     </p>
 
-                    <!-- Contact Buttons -->
-                    <div class="mt-4 d-flex flex-wrap gap-2">
-                        <a href="https://www.linkedin.com/in/saravana-vel-s-b610493a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="btn btn-primary">
-                            <i class="fa-brands fa-linkedin me-2"></i>LinkedIn
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <a href="https://www.linkedin.com/in/saravana-vel-s-b610493a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="contact-pill">
+                            <i class="fa-brands fa-linkedin text-primary fs-5"></i> LinkedIn
                         </a>
-                        <a href="mailto:saravanavel0820@gmail.com" class="btn btn-outline-danger">
-                            <i class="fa-solid fa-envelope me-2"></i>saravanavel0820@gmail.com
+                        <a href="mailto:saravanavel0820@gmail.com" class="contact-pill">
+                            <i class="fa-solid fa-envelope text-danger fs-5"></i> Email
                         </a>
-                        <a href="tel:+919489924936" class="btn btn-outline-success">
-                            <i class="fa-solid fa-phone me-2"></i>+91 9489924936
+                        <a href="tel:+919489924936" class="contact-pill">
+                            <i class="fa-solid fa-phone text-success fs-5"></i> +91 9489924936
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- UPCOMING EVENTS BUTTON -->
-        <div class="text-center my-5">
-            <button class="btn btn-warning btn-lg fw-bold shadow" onclick="showEvents()">
-                <i class="fa-solid fa-calendar-star me-2"></i>Show Upcoming Events
+        <!-- UPCOMING EVENTS TRIGGER BUTTON (AT TOP) -->
+        <div class="text-center mb-4">
+            <button class="btn btn-warning btn-lg rounded-pill px-4 py-2 fw-bold shadow-lg" onclick="toggleEvents()">
+                <i class="fa-solid fa-calendar-star me-2"></i> Show Upcoming Events
             </button>
         </div>
 
-        <!-- HIDDEN UPCOMING EVENT DISPLAY -->
-        <div id="eventSection" class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow border-warning">
-                    <div class="card-header bg-warning text-dark fw-bold text-center">
-                        <i class="fa-solid fa-rocket me-2"></i>Upcoming Educational Visit
-                    </div>
-                    <div class="card-body text-center p-4">
-                        <h4 class="card-title fw-bold">July 17 – 19 Visit @ ISRO & DRDO Lab</h4>
-                        <p class="card-text text-muted mt-2">
-                            An industrial research trip to observe advanced space technologies, satellite communications, defense electronics, and laboratory systems at ISRO and DRDO facilities.
+        <!-- REVEALED UPCOMING EVENT SECTION (LOADS AT THE TOP WHEN CLICKED) -->
+        <div id="eventSection" class="row justify-content-center mb-5">
+            <div class="col-lg-12">
+                <div class="event-banner shadow-lg">
+                    <div class="event-banner-inner text-center">
+                        <span class="badge bg-warning text-dark px-3 py-2 fs-6 rounded-pill mb-2 fw-bold">
+                            <i class="fa-solid fa-rocket me-1"></i> Educational Lab Visit
+                        </span>
+                        <h2 class="fw-bold my-2"><i class="fa-solid fa-user-astronaut me-2 text-primary"></i>ISRO & DRDO Lab Visit</h2>
+                        <p class="badge bg-primary px-3 py-2 fs-6 rounded-pill">July 17 – July 19</p>
+                        <p class="mt-2 mb-0 lead" style="color: var(--subtext-color);">
+                            An industrial research trip focusing on satellite systems, aerospace electronics, space research, and experimental laboratory equipment at ISRO and DRDO facilities.
                         </p>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- STATS & HIGHLIGHTS BAR -->
+        <div class="glass-card text-center p-3 mb-5 fs-6">
+            <span class="text-success"><i class="fa-solid fa-microchip me-1"></i> ESP32s Configured: 10+</span>
+            <span class="text-muted mx-3">|</span>
+            <span class="text-primary"><i class="fa-solid fa-chalkboard-user me-1"></i> Teaching Hours @ YGF: 100+</span>
+            <span class="text-muted mx-3">|</span>
+            <span class="text-warning"><i class="fa-solid fa-rocket me-1"></i> Satellite / DRDO Exposure</span>
+        </div>
+
+        <!-- FEATURED PROJECTS SECTION -->
+        <section class="mb-5">
+            <h2 class="text-center mb-4 fw-extrabold text-gradient"><i class="fa-solid fa-diagram-project me-2"></i>Featured Projects</h2>
+            <div class="row g-4">
+                <!-- Project 1: Satellite Launch -->
+                <div class="col-md-4">
+                    <div class="project-card h-100">
+                        <div class="d-inline-flex p-3 rounded-circle bg-danger bg-opacity-10 text-danger mb-3">
+                            <i class="fa-solid fa-satellite fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold">Satellite Launch Project</h4>
+                        <p class="small text-muted mb-3">Collaborative satellite research initiative alongside DRDO scientists and the Young Generation Forum of India network.</p>
+                        <a href="https://ygforumindia.com" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill">Visit YGF India <i class="fa-solid fa-external-link ms-1"></i></a>
+                    </div>
+                </div>
+
+                <!-- Project 2: Smart Home Automation -->
+                <div class="col-md-4">
+                    <div class="project-card h-100">
+                        <div class="d-inline-flex p-3 rounded-circle bg-primary bg-opacity-10 text-primary mb-3">
+                            <i class="fa-solid fa-house-signal fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold">Smart Home Automation</h4>
+                        <p class="small text-muted mb-3">Real-time remote control of household electrical relays and appliances using ESP32 via a secure web dashboard.</p>
+                        <a href="automation.html" class="btn btn-sm btn-outline-primary rounded-pill">Open Control Panel</a>
+                    </div>
+                </div>
+
+                <!-- Project 3: ESP32 Environmental Dashboard -->
+                <div class="col-md-4">
+                    <div class="project-card h-100">
+                        <div class="d-inline-flex p-3 rounded-circle bg-info bg-opacity-10 text-info mb-3">
+                            <i class="fa-solid fa-temperature-arrow-up fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold">IoT Environmental Telemetry</h4>
+                        <p class="small text-muted mb-3">Live telemetry showing real-time temperature and humidity readings collected directly from local ESP32 sensors.</p>
+                        <a href="esp32.html" class="btn btn-sm btn-outline-info rounded-pill">View Live Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENTORSHIP & TEACHING SPOTLIGHT -->
+        <section class="mb-5">
+            <div class="glass-card text-center p-4">
+                <i class="fa-solid fa-quote-left fa-2x text-gradient mb-2 opacity-50"></i>
+                <h4 class="fw-bold mb-2">Teaching & Youth Mentorship</h4>
+                <p class="lead text-muted fs-6 mb-0">
+                    "Through my teaching position at the Young Generation Forum of India, I mentor students in practical EEE logic, robotics, and STEM topics, bridging classroom concepts with practical hardware design."
+                </p>
+            </div>
+        </section>
+
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Toggle Dark Mode
+        // Theme Toggle Logic
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById("themeIcon");
             const text = document.getElementById("themeText");
             
-            if (body.getAttribute("data-theme") === "dark") {
+            if (body.getAttribute("data-theme") === "light") {
                 body.removeAttribute("data-theme");
-                icon.className = "fa-solid fa-moon me-2";
-                text.innerText = "Dark Mode";
+                icon.className = "fa-solid fa-moon me-1";
+                text.innerText = "Dark";
             } else {
-                body.setAttribute("data-theme", "dark");
-                icon.className = "fa-solid fa-sun me-2";
-                text.innerText = "Light Mode";
+                body.setAttribute("data-theme", "light");
+                icon.className = "fa-solid fa-sun me-1";
+                text.innerText = "Light";
             }
         }
 
-        // Show Event when button is clicked
-        function showEvents() {
+        // Toggle Event Section Display on Button Click
+        function toggleEvents() {
             const eventDiv = document.getElementById("eventSection");
-            if (eventDiv.style.display === "block") {
+            if (eventDiv.style.display === "flex") {
                 eventDiv.style.display = "none";
             } else {
-                eventDiv.style.display = "block";
+                eventDiv.style.display = "flex";
                 eventDiv.scrollIntoView({ behavior: 'smooth' });
             }
         }
