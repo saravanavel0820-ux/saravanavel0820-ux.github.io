@@ -12,26 +12,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
+        /* DEFAULT THEME IS NOW LIGHT MODE */
         :root {
+            --bg-color: #f1f5f9;
+            --text-color: #111827;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --accent-gradient: linear-gradient(135deg, #2563eb, #7c3aed, #db2777);
+            --primary-accent: #2563eb;
+            --subtext-color: #4b5563;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --nav-bg: rgba(241, 245, 249, 0.9);
+        }
+
+        /* TOGGLE THEME TO DARK MODE */
+        [data-theme="dark"] {
             --bg-color: #0b0f19;
             --text-color: #f8fafc;
             --card-bg: rgba(23, 31, 51, 0.65);
             --card-border: rgba(255, 255, 255, 0.08);
-            --accent-gradient: linear-gradient(135deg, #3b82f6, #9333ea, #e11d48);
-            --primary-accent: #3b82f6;
             --subtext-color: #94a3b8;
-            --font-main: 'Plus Jakarta Sans', sans-serif;
-            --font-heading: 'Space Grotesk', sans-serif;
             --nav-bg: rgba(11, 15, 25, 0.85);
-        }
-
-        [data-theme="light"] {
-            --bg-color: #f1f5f9;
-            --text-color: #111827;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --card-border: rgba(0, 0, 0, 0.06);
-            --subtext-color: #4b5563;
-            --nav-bg: rgba(241, 245, 249, 0.9);
         }
 
         body {
@@ -52,6 +54,7 @@
             backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--card-border);
             padding: 15px 0;
+            transition: background 0.4s ease;
         }
 
         .nav-link { color: var(--subtext-color) !important; transition: 0.3s; }
@@ -64,7 +67,8 @@
             border: 1px solid var(--card-border);
             border-radius: 28px;
             padding: 35px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: background 0.4s ease;
         }
 
         /* Profile Image */
@@ -74,7 +78,7 @@
             border-radius: 50%;
             border: 4px solid transparent;
             background: var(--accent-gradient) border-box;
-            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.35);
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.25);
         }
 
         /* Gradient Text */
@@ -155,7 +159,7 @@
                     <li class="nav-item"><a class="nav-link fw-bold" href="esp32.html">ESP32 Connect</a></li>
                     <li class="nav-item"><a class="nav-link fw-bold" href="automation.html">Automation</a></li>
                     <li class="nav-item ms-lg-3">
-                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="toggleTheme()">
+                        <button class="btn btn-sm btn-outline-dark rounded-pill px-3" id="themeBtn" onclick="toggleTheme()">
                             <i class="fa-solid fa-moon me-1" id="themeIcon"></i> <span id="themeText">Dark</span>
                         </button>
                     </li>
@@ -218,7 +222,7 @@
                         <div class="row g-4">
                             <!-- EVENT 1: ISRO & DRDO Lab Visit -->
                             <div class="col-lg-4 col-md-6">
-                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.03); border-color: var(--card-border) !important;">
+                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.05); border-color: var(--card-border) !important;">
                                     <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2 fw-bold">
                                         <i class="fa-solid fa-rocket me-1"></i> Educational Visit
                                     </span>
@@ -232,7 +236,7 @@
 
                             <!-- EVENT 2: Helium Balloon Satellite Launch -->
                             <div class="col-lg-4 col-md-6">
-                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.03); border-color: var(--card-border) !important;">
+                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.05); border-color: var(--card-border) !important;">
                                     <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2 fw-bold">
                                         <i class="fa-solid fa-satellite-dish me-1"></i> Launch Event
                                     </span>
@@ -249,7 +253,7 @@
 
                             <!-- EVENT 3: U R Rao Satellite Centre Visit -->
                             <div class="col-lg-4 col-md-6">
-                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.03); border-color: var(--card-border) !important;">
+                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.05); border-color: var(--card-border) !important;">
                                     <span class="badge bg-info text-dark px-3 py-1 rounded-pill mb-2 fw-bold">
                                         <i class="fa-solid fa-building-user me-1"></i> Industrial Visit
                                     </span>
@@ -338,20 +342,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Theme Toggle Logic
+        // Light/Dark Theme Toggle Logic (Defaults to Light)
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById("themeIcon");
             const text = document.getElementById("themeText");
+            const btn = document.getElementById("themeBtn");
             
-            if (body.getAttribute("data-theme") === "light") {
+            if (body.getAttribute("data-theme") === "dark") {
                 body.removeAttribute("data-theme");
                 icon.className = "fa-solid fa-moon me-1";
                 text.innerText = "Dark";
+                btn.className = "btn btn-sm btn-outline-dark rounded-pill px-3";
             } else {
-                body.setAttribute("data-theme", "light");
+                body.setAttribute("data-theme", "dark");
                 icon.className = "fa-solid fa-sun me-1";
                 text.innerText = "Light";
+                btn.className = "btn btn-sm btn-outline-light rounded-pill px-3";
             }
         }
 
