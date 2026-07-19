@@ -3,375 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saravana Vel S | Portfolio & IoT Hub</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    
+    <title>Solar Telemetry & AI Dashboard</title>
     <style>
-        /* DEFAULT THEME IS NOW LIGHT MODE */
-        :root {
-            --bg-color: #f1f5f9;
-            --text-color: #111827;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --card-border: rgba(0, 0, 0, 0.08);
-            --accent-gradient: linear-gradient(135deg, #2563eb, #7c3aed, #db2777);
-            --primary-accent: #2563eb;
-            --subtext-color: #4b5563;
-            --font-main: 'Plus Jakarta Sans', sans-serif;
-            --font-heading: 'Space Grotesk', sans-serif;
-            --nav-bg: rgba(241, 245, 249, 0.9);
-        }
-
-        /* TOGGLE THEME TO DARK MODE */
-        [data-theme="dark"] {
-            --bg-color: #0b0f19;
-            --text-color: #f8fafc;
-            --card-bg: rgba(23, 31, 51, 0.65);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --subtext-color: #94a3b8;
-            --nav-bg: rgba(11, 15, 25, 0.85);
-        }
-
-        body {
-            padding-top: 90px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-main);
-            transition: background-color 0.4s ease, color 0.4s ease;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, .nav-link { font-family: var(--font-heading); }
-
-        /* Custom Navbar */
-        .custom-navbar {
-            background: var(--nav-bg);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--card-border);
-            padding: 15px 0;
-            transition: background 0.4s ease;
-        }
-
-        .nav-link { color: var(--subtext-color) !important; transition: 0.3s; }
-        .nav-link.active, .nav-link:hover { color: var(--primary-accent) !important; }
-
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(18px);
-            border: 1px solid var(--card-border);
-            border-radius: 28px;
-            padding: 35px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: background 0.4s ease;
-        }
-
-        /* Profile Image */
-        .profile-img {
-            width: 190px; height: 190px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            background: var(--accent-gradient) border-box;
-            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.25);
-        }
-
-        /* Gradient Text */
-        .text-gradient {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Contact Pills */
-        .contact-pill {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-color);
-            padding: 10px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            display: inline-flex; align-items: center; gap: 8px;
-        }
-
-        .contact-pill:hover {
-            transform: translateY(-3px);
-            color: var(--primary-accent); border-color: var(--primary-accent);
-        }
-
-        /* Project Cards */
-        .project-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 25px;
-            transition: 0.3s;
-        }
-        .project-card:hover { transform: translateY(-5px); border-color: var(--primary-accent); }
-
-        /* Hidden Event Section Styling at TOP */
-        #eventSection {
-            display: none;
-            animation: fadeInUp 0.5s ease both;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .event-banner {
-            background: var(--accent-gradient);
-            border-radius: 24px;
-            padding: 3px;
-        }
-
-        .event-banner-inner {
-            background: var(--bg-color);
-            border-radius: 21px;
-            padding: 30px;
-        }
+        body { font-family: -apple-system, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 768px) { .container { grid-template-columns: 1fr; } }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h2 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+        .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .metric { background: #f8f9fa; padding: 15px; border-radius: 6px; text-align: center; }
+        .metric div { font-size: 0.9rem; color: #666; text-transform: uppercase; }
+        .metric span { font-size: 1.6rem; font-weight: bold; color: #2ecc71; }
+        #chat-box { height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 6px; background: #fafafa; margin-bottom: 10px; }
+        .chat-input-area { display: flex; gap: 10px; }
+        #chat-input { flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2980b9; }
+        .msg { margin-bottom: 10px; padding: 8px 12px; border-radius: 4px; max-width: 80%; }
+        .user-msg { background: #e1ffc7; margin-left: auto; text-align: right; }
+        .ai-msg { background: #e8ecef; }
     </style>
 </head>
 <body>
 
-    <!-- TOP NAVIGATION BAR -->
-    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-gradient fs-3" href="index.html">
-                <i class="fa-solid fa-microchip me-2"></i>IoT Hub
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center gap-3">
-                    <li class="nav-item"><a class="nav-link fw-bold active" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link fw-bold" href="esp32.html">ESP32 Connect</a></li>
-                    <li class="nav-item"><a class="nav-link fw-bold" href="automation.html">Automation</a></li>
-                    <li class="nav-item ms-lg-3">
-                        <button class="btn btn-sm btn-outline-dark rounded-pill px-3" id="themeBtn" onclick="toggleTheme()">
-                            <i class="fa-solid fa-moon me-1" id="themeIcon"></i> <span id="themeText">Dark</span>
-                        </button>
-                    </li>
-                </ul>
+    <h1 style="text-align: center; color: #2c3e50;">Solar Management Center</h1>
+
+    <div class="container">
+        <!-- Telemetry Panel -->
+        <div class="card">
+            <h2>System Telemetry</h2>
+            <div class="metric-grid">
+                <div class="metric"><div>Battery Voltage</div><span id="v-bat">0.00</span> V</div>
+                <div class="metric"><div>DC Load Power</div><span id="p-dc">0.00</span> W</div>
+                <div class="metric"><div>AC Grid Voltage</div><span id="v-ac">0.00</span> V</div>
+                <div class="metric"><div>AC Consumption</div><span id="p-ac">0.00</span> W</div>
             </div>
-        </div>
-    </nav>
-
-    <!-- MAIN CONTAINER -->
-    <div class="container my-4">
-
-        <!-- HERO / ABOUT ME SECTION -->
-        <div class="glass-card mb-4">
-            <div class="row align-items-center">
-                <div class="col-lg-4 text-center mb-4 mb-lg-0">
-                    <img src="profile.jpg" alt="Saravana Vel S" class="profile-img" onerror="this.src='https://via.placeholder.com/190?text=Profile+Pic'">
-                </div>
-                <div class="col-lg-8">
-                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">
-                        <i class="fa-solid fa-graduation-cap me-1"></i> EEE & IoT Engineer
-                    </span>
-                    <h1 class="display-4 fw-extrabold mb-1">Saravana Vel S</h1>
-                    <h4 class="text-gradient fw-bold mb-3">Kongu Engineering College</h4>
-                    
-                    <p class="lh-lg" style="color: var(--subtext-color);">
-                        Welcome to my website! I am an Electrical and Electronics Engineering (EEE) student passionate about microcontrollers, embedded systems, smart hardware automation, and Internet of Things (IoT) technologies.
-                        <br><br>
-                        I proudly serve as a <strong>Teacher in the Young Generation Forum of India</strong> (<a href="https://ygforumindia.com" target="_blank" class="text-primary text-decoration-none fw-semibold">ygforumindia.com <i class="fa-solid fa-arrow-up-right-from-square fs-6"></i></a>), dedicated to guiding students through practical STEM education, technological curiosity, and hands-on project building.
-                    </p>
-
-                    <div class="d-flex flex-wrap gap-2 mt-4">
-                        <a href="https://www.linkedin.com/in/saravana-vel-s-b610493a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="contact-pill">
-                            <i class="fa-brands fa-linkedin text-primary fs-5"></i> LinkedIn
-                        </a>
-                        <a href="mailto:saravanavel0820@gmail.com" class="contact-pill">
-                            <i class="fa-solid fa-envelope text-danger fs-5"></i> Email
-                        </a>
-                        <a href="tel:+919489924936" class="contact-pill">
-                            <i class="fa-solid fa-phone text-success fs-5"></i> +91 9489924936
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <p style="text-align: right; font-size: 0.8rem; color: #999;">Total energy used: <span id="e-ac">0</span> kWh</p>
         </div>
 
-        <!-- UPCOMING EVENTS TRIGGER BUTTON (AT TOP) -->
-        <div class="text-center mb-4">
-            <button class="btn btn-warning btn-lg rounded-pill px-4 py-2 fw-bold shadow-lg" onclick="toggleEvents()">
-                <i class="fa-solid fa-calendar-star me-2"></i> Show Upcoming Events
-            </button>
-        </div>
-
-        <!-- REVEALED UPCOMING EVENTS SECTION (3 EVENTS IN CHRONOLOGICAL ORDER) -->
-        <div id="eventSection" class="row justify-content-center mb-5">
-            <div class="col-lg-12">
-                <div class="event-banner shadow-lg">
-                    <div class="event-banner-inner">
-                        <h3 class="text-center fw-bold mb-4 text-gradient"><i class="fa-solid fa-bullhorn me-2"></i>Upcoming Events</h3>
-                        
-                        <div class="row g-4">
-                            <!-- EVENT 1: ISRO & DRDO Lab Visit -->
-                            <div class="col-lg-4 col-md-6">
-                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.05); border-color: var(--card-border) !important;">
-                                    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2 fw-bold">
-                                        <i class="fa-solid fa-rocket me-1"></i> Educational Visit
-                                    </span>
-                                    <h4 class="fw-bold my-2"><i class="fa-solid fa-user-astronaut me-2 text-primary"></i>ISRO & DRDO Lab Visit</h4>
-                                    <p class="badge bg-primary px-3 py-1 rounded-pill mb-2">July 17 – July 19</p>
-                                    <p class="mt-2 small" style="color: var(--subtext-color);">
-                                        An industrial research trip focusing on satellite systems, aerospace electronics, space research, and experimental laboratory equipment at ISRO and DRDO facilities.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- EVENT 2: Helium Balloon Satellite Launch -->
-                            <div class="col-lg-4 col-md-6">
-                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.05); border-color: var(--card-border) !important;">
-                                    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2 fw-bold">
-                                        <i class="fa-solid fa-satellite-dish me-1"></i> Launch Event
-                                    </span>
-                                    <h4 class="fw-bold my-2"><i class="fa-solid fa-balloon me-2 text-danger"></i>Helium Balloon Satellite Launch</h4>
-                                    <p class="badge bg-primary px-3 py-1 rounded-pill mb-2">July 26</p>
-                                    <p class="small text-muted mb-0">
-                                        <i class="fa-solid fa-location-dot me-1 text-danger"></i> <strong>Location:</strong> Vel's School
-                                    </p>
-                                    <p class="mt-2 small" style="color: var(--subtext-color);">
-                                        Experimental atmospheric satellite payload launch using high-altitude helium balloons for real-time telemetry and environmental sensor data collection.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- EVENT 3: U R Rao Satellite Centre Visit -->
-                            <div class="col-lg-4 col-md-6">
-                                <div class="p-3 rounded-4 border h-100" style="background: rgba(255,255,255,0.05); border-color: var(--card-border) !important;">
-                                    <span class="badge bg-info text-dark px-3 py-1 rounded-pill mb-2 fw-bold">
-                                        <i class="fa-solid fa-building-user me-1"></i> Industrial Visit
-                                    </span>
-                                    <h4 class="fw-bold my-2"><i class="fa-solid fa-flask me-2 text-info"></i>U. R. Rao Satellite Centre Visit</h4>
-                                    <p class="badge bg-primary px-3 py-1 rounded-pill mb-2">Next Month (2nd/3rd Week)</p>
-                                    <p class="small text-muted mb-0">
-                                        <i class="fa-solid fa-user-gear me-1 text-info"></i> <strong>Program:</strong> Interaction with Scientists
-                                    </p>
-                                    <p class="mt-2 small" style="color: var(--subtext-color);">
-                                        An exposure trip to ISRO's U. R. Rao Satellite Centre (URSC) to study satellite design, integration facilities, and engage directly with aerospace research scientists.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+        <!-- AI Assistant Panel -->
+        <div class="card">
+            <h2>AI Assistant (Ollama)</h2>
+            <div id="chat-box"></div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Ask about system health or metrics...">
+                <button onclick="sendMessage()">Ask AI</button>
             </div>
         </div>
-
-        <!-- STATS & HIGHLIGHTS BAR -->
-        <div class="glass-card text-center p-3 mb-5 fs-6">
-            <span class="text-success"><i class="fa-solid fa-microchip me-1"></i> ESP32s Configured: 10+</span>
-            <span class="text-muted mx-3">|</span>
-            <span class="text-primary"><i class="fa-solid fa-chalkboard-user me-1"></i> Teaching Hours @ YGF: 100+</span>
-            <span class="text-muted mx-3">|</span>
-            <span class="text-warning"><i class="fa-solid fa-rocket me-1"></i> Satellite / URSC Exposure</span>
-        </div>
-
-        <!-- FEATURED PROJECTS SECTION -->
-        <section class="mb-5">
-            <h2 class="text-center mb-4 fw-extrabold text-gradient"><i class="fa-solid fa-diagram-project me-2"></i>Featured Projects</h2>
-            <div class="row g-4">
-                <!-- Project 1: Satellite Launch -->
-                <div class="col-md-4">
-                    <div class="project-card h-100">
-                        <div class="d-inline-flex p-3 rounded-circle bg-danger bg-opacity-10 text-danger mb-3">
-                            <i class="fa-solid fa-satellite fa-2x"></i>
-                        </div>
-                        <h4 class="fw-bold">Satellite Launch Project</h4>
-                        <p class="small text-muted mb-3">Collaborative satellite research initiative alongside space scientists and the Young Generation Forum of India network.</p>
-                        <a href="https://ygforumindia.com" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill">Visit YGF India <i class="fa-solid fa-external-link ms-1"></i></a>
-                    </div>
-                </div>
-
-                <!-- Project 2: Smart Home Automation -->
-                <div class="col-md-4">
-                    <div class="project-card h-100">
-                        <div class="d-inline-flex p-3 rounded-circle bg-primary bg-opacity-10 text-primary mb-3">
-                            <i class="fa-solid fa-house-signal fa-2x"></i>
-                        </div>
-                        <h4 class="fw-bold">Smart Home Automation</h4>
-                        <p class="small text-muted mb-3">Real-time remote control of household electrical relays and appliances using ESP32 via a secure web dashboard.</p>
-                        <a href="automation.html" class="btn btn-sm btn-outline-primary rounded-pill">Open Control Panel</a>
-                    </div>
-                </div>
-
-                <!-- Project 3: ESP32 Environmental Dashboard -->
-                <div class="col-md-4">
-                    <div class="project-card h-100">
-                        <div class="d-inline-flex p-3 rounded-circle bg-info bg-opacity-10 text-info mb-3">
-                            <i class="fa-solid fa-temperature-arrow-up fa-2x"></i>
-                        </div>
-                        <h4 class="fw-bold">IoT Environmental Telemetry</h4>
-                        <p class="small text-muted mb-3">Live telemetry showing real-time temperature and humidity readings collected directly from local ESP32 sensors.</p>
-                        <a href="esp32.html" class="btn btn-sm btn-outline-info rounded-pill">View Live Dashboard</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- MENTORSHIP & TEACHING SPOTLIGHT -->
-        <section class="mb-5">
-            <div class="glass-card text-center p-4">
-                <i class="fa-solid fa-quote-left fa-2x text-gradient mb-2 opacity-50"></i>
-                <h4 class="fw-bold mb-2">Teaching & Youth Mentorship</h4>
-                <p class="lead text-muted fs-6 mb-0">
-                    "Through my teaching position at the Young Generation Forum of India, I mentor students in practical EEE logic, robotics, and STEM topics, bridging classroom concepts with practical hardware design."
-                </p>
-            </div>
-        </section>
-
     </div>
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-        // Light/Dark Theme Toggle Logic (Defaults to Light)
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById("themeIcon");
-            const text = document.getElementById("themeText");
-            const btn = document.getElementById("themeBtn");
-            
-            if (body.getAttribute("data-theme") === "dark") {
-                body.removeAttribute("data-theme");
-                icon.className = "fa-solid fa-moon me-1";
-                text.innerText = "Dark";
-                btn.className = "btn btn-sm btn-outline-dark rounded-pill px-3";
-            } else {
-                body.setAttribute("data-theme", "dark");
-                icon.className = "fa-solid fa-sun me-1";
-                text.innerText = "Light";
-                btn.className = "btn btn-sm btn-outline-light rounded-pill px-3";
+        // REPLACE WITH YOUR FLASK SERVER PUBLIC OR PRIVATE IP ADDRESS
+        const LOCAL_API_URL = "http://localhost:5000/api";
+
+        // Fetch metrics from backend
+        async function fetchMetrics() {
+            try {
+                const res = await fetch(`${LOCAL_API_URL}/status`);
+                const data = await res.json();
+                
+                document.getElementById('v-bat').innerText = data.battery_voltage.toFixed(2);
+                document.getElementById('p-dc').innerText = (data.dc_power_mw / 1000).toFixed(2);
+                document.getElementById('v-ac').innerText = data.ac_voltage.toFixed(1);
+                document.getElementById('p-ac').innerText = data.ac_power.toFixed(1);
+                document.getElementById('e-ac').innerText = data.ac_energy.toFixed(2);
+            } catch (err) {
+                console.error("Error fetching telemetry:", err);
             }
         }
 
-        // Toggle Event Section Display on Button Click
-        function toggleEvents() {
-            const eventDiv = document.getElementById("eventSection");
-            if (eventDiv.style.display === "flex" || eventDiv.style.display === "block") {
-                eventDiv.style.display = "none";
-            } else {
-                eventDiv.style.display = "block";
-                eventDiv.scrollIntoView({ behavior: 'smooth' });
+        // Send chat message to local AI engine via backend
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const chatBox = document.getElementById('chat-box');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Render user message
+            chatBox.innerHTML += `<div class="msg user-msg">${message}</div>`;
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const res = await fetch(`${LOCAL_API_URL}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+                const data = await res.json();
+                
+                // Render AI response
+                chatBox.innerHTML += `<div class="msg ai-msg">${data.reply}</div>`;
+            } catch (err) {
+                chatBox.innerHTML += `<div class="msg ai-msg" style="color:red;">Error connecting to backend assistant.</div>`;
             }
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
+
+        // Poll telemetry every 3 seconds
+        setInterval(fetchMetrics, 3000);
+        fetchMetrics();
     </script>
 </body>
 </html>
