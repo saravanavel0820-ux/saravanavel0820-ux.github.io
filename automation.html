@@ -3,85 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Microgrid Automation</title>
+    <title>Microgrid Automation (Showcase Demo)</title>
     <style>
-        :root { --bg-color: #0f172a; --card-bg: #1e293b; --accent: #a855f7; --text: #f8fafc; }
-        body { font-family: system-ui, sans-serif; background: var(--bg-color); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        h1 { color: #eab308; }
-        nav { display: flex; gap: 15px; margin-bottom: 30px; }
-        nav a { color: #94a3b8; text-decoration: none; padding: 8px 16px; background: #1e293b; border-radius: 6px; font-weight: 500; }
-        nav a:nth-child(1) { color: #94a3b8; }
-        nav a:nth-child(2) { background: #eab308; color: #0f172a; }
-        .control-panel { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .switch-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #334155; }
-        .switch-row:last-child { border-bottom: none; }
-        .switch-label { font-size: 1.2rem; font-weight: 500; }
-        .toggle-btn { padding: 10px 20px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; transition: 0.2s; }
-        .btn-off { background: #475569; color: #cbd5e1; }
-        .btn-on { background: #22c55e; color: white; box-shadow: 0 0 10px rgba(34,197,94,0.4); }
+        :root { 
+            --bg-color: #0f172a; 
+            --card-bg: #1e293b; 
+            --accent: #22c55e; 
+            --text: #f8fafc; 
+        }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+        h1 { color: #eab308; text-align: center; margin-bottom: 5px; }
+        .demo-badge {
+            background: #eab308;
+            color: #0f172a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .nav-btn { 
+            display: inline-block; 
+            background: #475569; 
+            color: white; 
+            padding: 10px 20px; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-bottom: 25px; 
+            transition: background 0.2s;
+        }
+        .nav-btn:hover { background: #334155; }
+        .panel { 
+            width: 100%; 
+            max-width: 500px; 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        .row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 0; 
+            border-bottom: 1px solid #334155; 
+        }
+        .row:last-child { border-bottom: none; }
+        .label-group { display: flex; flex-direction: column; }
+        .label { font-size: 1.1rem; font-weight: 500; }
+        .sub-label { font-size: 0.85rem; color: #94a3b8; margin-top: 2px; }
+        
+        /* Modern Toggle Switch Design */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #64748b;
+            transition: .3s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--accent);
+            box-shadow: 0 0 10px rgba(34,197,94,0.4);
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .status-text {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 4px;
+            text-align: right;
+            color: #64748b;
+            transition: color 0.2s;
+        }
+        input:checked ~ .status-text {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
 
-    <h1>Microgrid Control Automation</h1>
+    <h1>Microgrid Smart Automation</h1>
+    <div class="demo-badge">Interactive UI Showcase</div>
     
-    <nav>
-        <a href="/">Template Dashboard</a>
-        <a href="/automation">Automation System</a>
-        <a href="/consumption">Power Consumption</a>
-    </nav>
+    <a href="index.html" class="nav-btn">← Back to Dashboard Overview</a>
 
-    <div class="control-panel">
-        <div class="switch-row">
-            <span class="switch-label">Living Room Main Light</span>
-            <button id="living_room_light" class="toggle-btn btn-off" onclick="toggleRelay('living_room_light')">OFF</button>
+    <div class="panel">
+        <!-- Switch 1 -->
+        <div class="row">
+            <div class="label-group">
+                <span class="label">Living Room Lights</span>
+                <span class="sub-label">Zone 1 • Smart Relay</span>
+            </div>
+            <div>
+                <label class="switch">
+                    <input type="checkbox" id="lightSwitch" onchange="toggleDemoState('lightSwitch', 'lightStatus')">
+                    <span class="slider"></span>
+                </label>
+                <div id="lightStatus" class="status-text">DISCONNECTED</div>
+            </div>
         </div>
-        <div class="switch-row">
-            <span class="switch-label">Kitchen Exhaust Fan</span>
-            <button id="kitchen_fan" class="toggle-btn btn-off" onclick="toggleRelay('kitchen_fan')">OFF</button>
+
+        <!-- Switch 2 -->
+        <div class="row">
+            <div class="label-group">
+                <span class="label">Kitchen HVAC Fan</span>
+                <span class="sub-label">Zone 2 • Heavy Load</span>
+            </div>
+            <div>
+                <label class="switch">
+                    <input type="checkbox" id="fanSwitch" onchange="toggleDemoState('fanSwitch', 'fanStatus')">
+                    <span class="slider"></span>
+                </label>
+                <div id="fanStatus" class="status-text">DISCONNECTED</div>
+            </div>
         </div>
-        <div class="switch-row">
-            <span class="switch-label">Master Bedroom AC Unit</span>
-            <button id="bedroom_ac" class="toggle-btn btn-off" onclick="toggleRelay('bedroom_ac')">OFF</button>
+
+        <!-- Switch 3 -->
+        <div class="row">
+            <div class="label-group">
+                <span class="label">Master Bedroom AC</span>
+                <span class="sub-label">Zone 3 • Climate Control</span>
+            </div>
+            <div>
+                <label class="switch">
+                    <input type="checkbox" id="acSwitch" onchange="toggleDemoState('acSwitch', 'acStatus')">
+                    <span class="slider"></span>
+                </label>
+                <div id="acStatus" class="status-text">DISCONNECTED</div>
+            </div>
         </div>
-        <div class="switch-row">
-            <span class="switch-label">Outdoor Perimeter Security Light</span>
-            <button id="outdoor_security" class="toggle-btn btn-off" onclick="toggleRelay('outdoor_security')">OFF</button>
+        
+        <!-- Switch 4 -->
+        <div class="row">
+            <div class="label-group">
+                <span class="label">Water Heating Pump</span>
+                <span class="sub-label">Zone 4 • Automated Schedule</span>
+            </div>
+            <div>
+                <label class="switch">
+                    <input type="checkbox" id="pumpSwitch" onchange="toggleDemoState('pumpSwitch', 'pumpStatus')">
+                    <span class="slider"></span>
+                </label>
+                <div id="pumpStatus" class="status-text">DISCONNECTED</div>
+            </div>
         </div>
     </div>
 
     <script>
-        const BACKEND_URL = window.location.origin;
-
-        async function updateSwitchUI() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/automation/switches`);
-                const states = await response.json();
-                
-                for (const [key, value] of Object.entries(states)) {
-                    const btn = document.getElementById(key);
-                    if (btn) {
-                        btn.innerText = value ? "ON" : "OFF";
-                        btn.className = `toggle-btn ${value ? 'btn-on' : 'btn-off'}`;
-                    }
-                }
-            } catch (err) { console.error("Error refreshing switch positions:", err); }
+        // Completely offline/frontend simulation function
+        function toggleDemoState(checkboxId, statusId) {
+            const checkbox = document.getElementById(checkboxId);
+            const statusText = document.getElementById(statusId);
+            
+            if (checkbox.checked) {
+                statusText.innerText = "ACTIVE / ON";
+            } else {
+                statusText.innerText = "DISCONNECTED";
+            }
         }
-
-        async function toggleRelay(switchId) {
-            try {
-                await fetch(`${BACKEND_URL}/api/automation/toggle`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ switch_id: switchId })
-                });
-                updateSwitchUI();
-            } catch (err) { console.error("Failed to execute relay switch toggle action:", err); }
-        }
-
-        // Keep page synchronized with live database changes
-        setInterval(updateSwitchUI, 2000);
-        updateSwitchUI();
     </script>
 </body>
 </html>
