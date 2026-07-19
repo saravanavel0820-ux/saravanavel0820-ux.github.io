@@ -3,149 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Home Automation | IoT Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-
+    <title>Microgrid Automation</title>
     <style>
-        :root {
-            --bg-color: #0b0f19;
-            --text-color: #f8fafc;
-            --card-bg: rgba(23, 31, 51, 0.65);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --accent-gradient: linear-gradient(135deg, #3b82f6, #9333ea, #e11d48);
-            --primary-accent: #3b82f6;
-            --subtext-color: #94a3b8;
-            --font-main: 'Plus Jakarta Sans', sans-serif;
-            --font-heading: 'Space Grotesk', sans-serif;
-            --nav-bg: rgba(11, 15, 25, 0.85);
-        }
-
-        body {
-            padding-top: 90px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-main);
-            min-height: 100vh;
-        }
-
-        h1, h2, h3, .nav-link { font-family: var(--font-heading); }
-
-        .custom-navbar {
-            background: var(--nav-bg);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--card-border);
-            padding: 15px 0;
-        }
-
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(18px);
-            border: 1px solid var(--card-border);
-            border-radius: 28px;
-            padding: 35px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
-        }
-
-        .text-gradient {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
-        }
-
-        .control-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-        }
+        :root { --bg-color: #0f172a; --card-bg: #1e293b; --accent: #a855f7; --text: #f8fafc; }
+        body { font-family: system-ui, sans-serif; background: var(--bg-color); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        h1 { color: #eab308; }
+        nav { display: flex; gap: 15px; margin-bottom: 30px; }
+        nav a { color: #94a3b8; text-decoration: none; padding: 8px 16px; background: #1e293b; border-radius: 6px; font-weight: 500; }
+        nav a:nth-child(1) { color: #94a3b8; }
+        nav a:nth-child(2) { background: #eab308; color: #0f172a; }
+        .control-panel { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .switch-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #334155; }
+        .switch-row:last-child { border-bottom: none; }
+        .switch-label { font-size: 1.2rem; font-weight: 500; }
+        .toggle-btn { padding: 10px 20px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; transition: 0.2s; }
+        .btn-off { background: #475569; color: #cbd5e1; }
+        .btn-on { background: #22c55e; color: white; box-shadow: 0 0 10px rgba(34,197,94,0.4); }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-gradient fs-3" href="index.html">
-                <i class="fa-solid fa-microchip me-2"></i>IoT Hub
-            </a>
-            
-            <div class="ms-auto d-flex align-items-center gap-3">
-                <span id="userNameDisplay" class="small fw-semibold text-primary"></span>
-                <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="handleLogout()">
-                    <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
-                </button>
-            </div>
-        </div>
+    <h1>Microgrid Control Automation</h1>
+    
+    <nav>
+        <a href="/">Template Dashboard</a>
+        <a href="/automation">Automation System</a>
+        <a href="/consumption">Power Consumption</a>
     </nav>
 
-    <div class="container my-4">
-        <div class="glass-card mb-4">
-            <h2 class="fw-bold text-gradient mb-2"><i class="fa-solid fa-sliders me-2"></i>Home Automation Panel</h2>
-            <p class="text-muted mb-0">Control relays and connected hardware in real time.</p>
+    <div class="control-panel">
+        <div class="switch-row">
+            <span class="switch-label">Living Room Main Light</span>
+            <button id="living_room_light" class="toggle-btn btn-off" onclick="toggleRelay('living_room_light')">OFF</button>
         </div>
-
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="control-card">
-                    <i class="fa-solid fa-lightbulb fa-3x text-warning mb-3"></i>
-                    <h4>Main Light</h4>
-                    <button class="btn btn-primary rounded-pill px-4 mt-2" onclick="alert('Relay 1 Toggled!')">Toggle Power</button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="control-card">
-                    <i class="fa-solid fa-fan fa-3x text-info mb-3"></i>
-                    <h4>Fan Relay</h4>
-                    <button class="btn btn-info text-white rounded-pill px-4 mt-2" onclick="alert('Relay 2 Toggled!')">Toggle Power</button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="control-card">
-                    <i class="fa-solid fa-plug fa-3x text-danger mb-3"></i>
-                    <h4>Smart Plug</h4>
-                    <button class="btn btn-danger rounded-pill px-4 mt-2" onclick="alert('Relay 3 Toggled!')">Toggle Power</button>
-                </div>
-            </div>
+        <div class="switch-row">
+            <span class="switch-label">Kitchen Exhaust Fan</span>
+            <button id="kitchen_fan" class="toggle-btn btn-off" onclick="toggleRelay('kitchen_fan')">OFF</button>
+        </div>
+        <div class="switch-row">
+            <span class="switch-label">Master Bedroom AC Unit</span>
+            <button id="bedroom_ac" class="toggle-btn btn-off" onclick="toggleRelay('bedroom_ac')">OFF</button>
+        </div>
+        <div class="switch-row">
+            <span class="switch-label">Outdoor Perimeter Security Light</span>
+            <button id="outdoor_security" class="toggle-btn btn-off" onclick="toggleRelay('outdoor_security')">OFF</button>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyB-EXAMPLE_API_KEY_HERESx9234",
-            authDomain: "saravanavel0820-ux.firebaseapp.com",
-            projectId: "saravanavel0820-ux",
-            storageBucket: "saravanavel0820-ux.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:1234567890:web:abcdef123456"
-        };
+        const BACKEND_URL = window.location.origin;
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        async function updateSwitchUI() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/automation/switches`);
+                const states = await response.json();
+                
+                for (const [key, value] of Object.entries(states)) {
+                    const btn = document.getElementById(key);
+                    if (btn) {
+                        btn.innerText = value ? "ON" : "OFF";
+                        btn.className = `toggle-btn ${value ? 'btn-on' : 'btn-off'}`;
+                    }
+                }
+            } catch (err) { console.error("Error refreshing switch positions:", err); }
         }
-        const auth = firebase.auth();
 
-        // --- AUTHENTICATION GUARD ---
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                // If not logged in, force redirect to login page
-                window.location.href = 'auth.html';
-            } else {
-                // Display user's name or email
-                document.getElementById('userNameDisplay').innerText = `Logged in: ${user.displayName || user.email}`;
-            }
-        });
-
-        // --- LOGOUT HANDLER ---
-        function handleLogout() {
-            auth.signOut().then(() => {
-                window.location.href = 'auth.html';
-            });
+        async function toggleRelay(switchId) {
+            try {
+                await fetch(`${BACKEND_URL}/api/automation/toggle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ switch_id: switchId })
+                });
+                updateSwitchUI();
+            } catch (err) { console.error("Failed to execute relay switch toggle action:", err); }
         }
+
+        // Keep page synchronized with live database changes
+        setInterval(updateSwitchUI, 2000);
+        updateSwitchUI();
     </script>
 </body>
 </html>

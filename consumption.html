@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Consumption</title>
+    <style>
+        :root { --bg-color: #0f172a; --card-bg: #1e293b; --accent: #38bdf8; --text: #f8fafc; }
+        body { font-family: system-ui, sans-serif; background: var(--bg-color); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        h1 { color: #eab308; }
+        nav { display: flex; gap: 15px; margin-bottom: 30px; }
+        nav a { color: #94a3b8; text-decoration: none; padding: 8px 16px; background: #1e293b; border-radius: 6px; font-weight: 500; }
+        nav a:nth-child(1) { color: #94a3b8; }
+        nav a:nth-child(3) { background: #eab308; color: #0f172a; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; max-width: 900px; }
+        .card { background: var(--card-bg); padding: 25px; border-radius: 12px; text-align: center; border-bottom: 4px solid var(--accent); }
+        .card.total-box { border-bottom-color: #22c55e; }
+        .card h3 { margin: 0 0 10px 0; color: #94a3b8; }
+        .card p { margin: 0; font-size: 2.2rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Microgrid Load Consumption Analysis</h1>
+    
+    <nav>
+        <a href="/">Template Dashboard</a>
+        <a href="/automation">Automation System</a>
+        <a href="/consumption">Power Consumption</a>
+    </nav>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Living Room Load</h3>
+            <p id="room-living">0.0 W</p>
+        </div>
+        <div class="card">
+            <h3>Kitchen Load</h3>
+            <p id="room-kitchen">0.0 W</p>
+        </div>
+        <div class="card">
+            <h3>Bedroom Load</h3>
+            <p id="room-bedroom">0.0 W</p>
+        </div>
+        <div class="card total-box">
+            <h3>Total Microgrid Load Demand</h3>
+            <p id="load-total" style="color: #22c55e;">0.0 W</p>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = window.location.origin;
+
+        async function fetchConsumption() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/consumption`);
+                const data = await response.json();
+                
+                document.getElementById('room-living').innerText = data.living_room + " W";
+                document.getElementById('room-kitchen').innerText = data.kitchen + " W";
+                document.getElementById('room-bedroom').innerText = data.bedroom + " W";
+                document.getElementById('load-total').innerText = data.total_load + " W";
+            } catch (err) { console.error("Could not fetch downstream consumption metrics:", err); }
+        }
+
+        setInterval(fetchConsumption, 2000);
+        fetchConsumption();
+    </script>
+</body>
+</html>
