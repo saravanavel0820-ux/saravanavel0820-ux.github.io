@@ -21,7 +21,34 @@
             flex-direction: column;
             align-items: center;
         }
-        h1 { color: var(--accent); text-align: center; }
+        h1 { color: var(--accent); text-align: center; margin-bottom: 10px; }
+        
+        /* New Styles for Navigation Button */
+        .nav-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .nav-btn {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .nav-btn:hover {
+            background: #2563eb;
+        }
+        .nav-btn:active {
+            transform: scale(0.98);
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -87,6 +114,11 @@
 <body>
 
     <h1>Renewable Energy Monitoring System for Microgrids</h1>
+    
+    <!-- Navigation Container with Automation Link -->
+    <div class="nav-container">
+        <a href="automation.html" class="nav-btn">Go to Automation Panel →</a>
+    </div>
     
     <!-- Dashboard Cards -->
     <div class="grid">
