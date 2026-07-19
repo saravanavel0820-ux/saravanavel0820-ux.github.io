@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Microgrid Automation (Showcase Demo)</title>
+    <title>Microgrid Automation Dashboard</title>
     <style>
         :root { 
             --bg-color: #0f172a; 
             --card-bg: #1e293b; 
             --accent: #22c55e; 
             --text: #f8fafc; 
+            --danger: #ef4444;
+            --warning: #f59e0b;
         }
         body { 
             font-family: system-ui, -apple-system, sans-serif; 
@@ -21,18 +23,19 @@
             flex-direction: column; 
             align-items: center; 
         }
-        h1 { color: #eab308; text-align: center; margin-bottom: 5px; }
-        .demo-badge {
-            background: #eab308;
-            color: #0f172a;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        h1 { color: #eab308; text-align: center; margin-bottom: 20px; }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
+        @media(min-width: 768px) {
+            .container { grid-template-columns: 2fr 1fr; }
+        }
+
         .nav-btn { 
             display: inline-block; 
             background: #475569; 
@@ -43,16 +46,18 @@
             font-weight: bold; 
             margin-bottom: 25px; 
             transition: background 0.2s;
+            align-self: flex-start;
         }
         .nav-btn:hover { background: #334155; }
+        
         .panel { 
-            width: 100%; 
-            max-width: 500px; 
             background: var(--card-bg); 
             padding: 25px; 
             border-radius: 12px; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
         }
+        .panel h2 { margin-top: 0; color: #94a3b8; font-size: 1.3rem; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+
         .row { 
             display: flex; 
             justify-content: space-between; 
@@ -65,6 +70,20 @@
         .label { font-size: 1.1rem; font-weight: 500; }
         .sub-label { font-size: 0.85rem; color: #94a3b8; margin-top: 2px; }
         
+        /* Badges */
+        .priority-badge {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 4px;
+            width: fit-content;
+        }
+        .high { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .med { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .low { background: rgba(34, 197, 94, 0.2); color: var(--accent); }
+
         /* Modern Toggle Switch Design */
         .switch {
             position: relative;
@@ -72,133 +91,179 @@
             width: 60px;
             height: 34px;
         }
-        .switch input { 
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #64748b;
-            transition: .3s;
-            border-radius: 34px;
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #64748b; transition: .3s; border-radius: 34px;
         }
         .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
+            position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px;
+            background-color: white; transition: .3s; border-radius: 50%;
         }
         input:checked + .slider {
             background-color: var(--accent);
             box-shadow: 0 0 10px rgba(34,197,94,0.4);
         }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
+        input:checked + .slider:before { transform: translateX(26px); }
+        
         .status-text {
-            font-size: 0.85rem;
+            font-size: 0.85rem; font-weight: bold; margin-top: 4px; text-align: right; color: #64748b;
+        }
+        input:checked ~ .status-text { color: var(--accent); }
+
+        /* Emergency Block */
+        .emergency-btn {
+            width: 100%;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
             font-weight: bold;
-            margin-top: 4px;
-            text-align: right;
-            color: #64748b;
-            transition: color 0.2s;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
         }
-        input:checked ~ .status-text {
-            color: var(--accent);
+        .emergency-btn:hover { opacity: 0.9; }
+
+        /* Metric Item */
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 0.95rem;
         }
+        .metric-val { font-weight: bold; color: #eab308; }
     </style>
 </head>
 <body>
 
-    <h1>Microgrid Smart Automation</h1>
-    <div class="demo-badge">Interactive UI Showcase</div>
-    
     <a href="index.html" class="nav-btn">← Back to Dashboard Overview</a>
-
-    <div class="panel">
-        <!-- Switch 1 -->
-        <div class="row">
-            <div class="label-group">
-                <span class="label">Living Room Lights</span>
-                <span class="sub-label">Zone 1 • Smart Relay</span>
+    <h1>Microgrid Smart Automation Panel</h1>
+    
+    <div class="container">
+        <!-- Main Relay Controls -->
+        <div class="panel">
+            <h2>Dynamic Load Management</h2>
+            
+            <!-- Switch 1 -->
+            <div class="row">
+                <div class="label-group">
+                    <span class="label">Living Room Essential Lighting</span>
+                    <span class="sub-label">Relay Module #1</span>
+                    <span class="priority-badge high">Priority 1 (Critical)</span>
+                </div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="lightSwitch" checked onchange="toggleState('lightSwitch', 'lightStatus')">
+                        <span class="slider"></span>
+                    </label>
+                    <div id="lightStatus" class="status-text" style="color: var(--accent);">ACTIVE / ON</div>
+                </div>
             </div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="lightSwitch" onchange="toggleDemoState('lightSwitch', 'lightStatus')">
-                    <span class="slider"></span>
-                </label>
-                <div id="lightStatus" class="status-text">DISCONNECTED</div>
+
+            <!-- Switch 2 -->
+            <div class="row">
+                <div class="label-group">
+                    <span class="label">Kitchen Ventilation HVAC</span>
+                    <span class="sub-label">Relay Module #2</span>
+                    <span class="priority-badge med">Priority 2 (Secondary)</span>
+                </div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="fanSwitch" onchange="toggleState('fanSwitch', 'fanStatus')">
+                        <span class="slider"></span>
+                    </label>
+                    <div id="fanStatus" class="status-text">SHEDDED / OFF</div>
+                </div>
+            </div>
+
+            <!-- Switch 3 -->
+            <div class="row">
+                <div class="label-group">
+                    <span class="label">Master Bedroom Climate Unit</span>
+                    <span class="sub-label">Relay Module #3</span>
+                    <span class="priority-badge low">Priority 3 (Non-Essential)</span>
+                </div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="acSwitch" onchange="toggleState('acSwitch', 'acStatus')">
+                        <span class="slider"></span>
+                    </label>
+                    <div id="acStatus" class="status-text">SHEDDED / OFF</div>
+                </div>
+            </div>
+            
+            <!-- Switch 4 -->
+            <div class="row">
+                <div class="label-group">
+                    <span class="label">Deep Well Water Pump</span>
+                    <span class="sub-label">Relay Module #4</span>
+                    <span class="priority-badge med">Priority 2 (Secondary)</span>
+                </div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="pumpSwitch" onchange="toggleState('pumpSwitch', 'pumpStatus')">
+                        <span class="slider"></span>
+                    </label>
+                    <div id="pumpStatus" class="status-text">SHEDDED / OFF</div>
+                </div>
             </div>
         </div>
 
-        <!-- Switch 2 -->
-        <div class="row">
-            <div class="label-group">
-                <span class="label">Kitchen HVAC Fan</span>
-                <span class="sub-label">Zone 2 • Heavy Load</span>
+        <!-- Sidebar Automation Configurations -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- Automation Rules -->
+            <div class="panel">
+                <h2>Intelligent SoC Triggers</h2>
+                <div class="metric-item">
+                    <span>High Load Shedding:</span>
+                    <span class="metric-val">Active (&lt;30% SoC)</span>
+                </div>
+                <div class="metric-item">
+                    <span>Solar Diversion:</span>
+                    <span class="metric-val">Enabled (&gt;90% SoC)</span>
+                </div>
+                <div class="metric-item">
+                    <span>Peak Shaving Target:</span>
+                    <span class="metric-val">1.2 kW max</span>
+                </div>
             </div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="fanSwitch" onchange="toggleDemoState('fanSwitch', 'fanStatus')">
-                    <span class="slider"></span>
-                </label>
-                <div id="fanStatus" class="status-text">DISCONNECTED</div>
-            </div>
-        </div>
 
-        <!-- Switch 3 -->
-        <div class="row">
-            <div class="label-group">
-                <span class="label">Master Bedroom AC</span>
-                <span class="sub-label">Zone 3 • Climate Control</span>
-            </div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="acSwitch" onchange="toggleDemoState('acSwitch', 'acStatus')">
-                    <span class="slider"></span>
-                </label>
-                <div id="acStatus" class="status-text">DISCONNECTED</div>
-            </div>
-        </div>
-        
-        <!-- Switch 4 -->
-        <div class="row">
-            <div class="label-group">
-                <span class="label">Water Heating Pump</span>
-                <span class="sub-label">Zone 4 • Automated Schedule</span>
-            </div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="pumpSwitch" onchange="toggleDemoState('pumpSwitch', 'pumpStatus')">
-                    <span class="slider"></span>
-                </label>
-                <div id="pumpStatus" class="status-text">DISCONNECTED</div>
+            <!-- System Overrides -->
+            <div class="panel" style="border: 1px solid rgba(239, 68, 68, 0.4);">
+                <h2>Emergency Isolation</h2>
+                <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0;">Instantly trip all connected solid-state relays in the event of thermal runaway or hardware faults.</p>
+                <button class="emergency-btn" onclick="emergencyTrip()">MASS BLACKOUT TRIP</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Completely offline/frontend simulation function
-        function toggleDemoState(checkboxId, statusId) {
+        function toggleState(checkboxId, statusId) {
             const checkbox = document.getElementById(checkboxId);
             const statusText = document.getElementById(statusId);
             
             if (checkbox.checked) {
                 statusText.innerText = "ACTIVE / ON";
+                statusText.style.color = "var(--accent)";
             } else {
-                statusText.innerText = "DISCONNECTED";
+                statusText.innerText = "SHEDDED / OFF";
+                statusText.style.color = "#64748b";
             }
+        }
+
+        function emergencyTrip() {
+            const switches = ['lightSwitch', 'fanSwitch', 'acSwitch', 'pumpSwitch'];
+            const statuses = ['lightStatus', 'fanStatus', 'acStatus', 'pumpStatus'];
+            
+            switches.forEach((sw, idx) => {
+                const checkbox = document.getElementById(sw);
+                checkbox.checked = false;
+                toggleState(sw, statuses[idx]);
+            });
+            
+            alert("EMERGENCY OVERRIDE: All microgrid relays successfully opened.");
         }
     </script>
 </body>
