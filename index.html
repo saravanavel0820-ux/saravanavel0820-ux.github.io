@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renewable Energy Monitoring System for Microgrids</title>
+    <title>Solar Smart Grid Dashboard</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -21,7 +21,7 @@
             flex-direction: column;
             align-items: center;
         }
-        h1 { color: var(--accent); text-align: center; }
+        h1 { color: var(--accent); }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -86,7 +86,7 @@
 </head>
 <body>
 
-    <h1>Renewable Energy Monitoring System for Microgrids</h1>
+    <h1>Solar Generation Dashboard</h1>
     
     <!-- Dashboard Cards -->
     <div class="grid">
@@ -121,19 +121,13 @@
     </div>
 
     <script>
-        // REPLACE THIS URL with your live Ngrok or Pinggy public link
-        // Example: "https://rslb-123-45-67.pinggy.link" or "https://your-subdomain.ngrok-free.app"
-        const BACKEND_URL = "YOUR_PUBLIC_TUNNEL_URL_HERE";
+        // Adjust this URL to point to your Flask server's IP address
+        const BACKEND_URL = "http://localhost:5000";
 
         // Fetch Live telemetry every 3 seconds
         async function fetchTelemetry() {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/dashboard`, {
-                    headers: {
-                        "ngrok-skip-browser-warning": "69420",
-                        "User-Agent": "Custom"
-                    }
-                });
+                const response = await fetch(`${BACKEND_URL}/api/dashboard`);
                 const data = await response.json();
                 
                 document.getElementById('volt').innerText = data.voltage + " V";
@@ -161,11 +155,7 @@
             try {
                 const response = await fetch(`${BACKEND_URL}/api/chat`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        "ngrok-skip-browser-warning": "69420",
-                        "User-Agent": "Custom"
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: message })
                 });
                 const data = await response.json();
