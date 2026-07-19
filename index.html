@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar Smart Grid Dashboard</title>
+    <title>Renewable Energy Monitoring System for Microgrids</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -21,7 +21,7 @@
             flex-direction: column;
             align-items: center;
         }
-        h1 { color: var(--accent); }
+        h1 { color: var(--accent); text-align: center; }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -86,7 +86,7 @@
 </head>
 <body>
 
-    <h1>Solar Generation Dashboard</h1>
+    <h1>Renewable Energy Monitoring System for Microgrids</h1>
     
     <!-- Dashboard Cards -->
     <div class="grid">
@@ -128,7 +128,12 @@
         // Fetch Live telemetry every 3 seconds
         async function fetchTelemetry() {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/dashboard`);
+                const response = await fetch(`${BACKEND_URL}/api/dashboard`, {
+                    headers: {
+                        "ngrok-skip-browser-warning": "69420",
+                        "User-Agent": "Custom"
+                    }
+                });
                 const data = await response.json();
                 
                 document.getElementById('volt').innerText = data.voltage + " V";
@@ -156,7 +161,11 @@
             try {
                 const response = await fetch(`${BACKEND_URL}/api/chat`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        "ngrok-skip-browser-warning": "69420",
+                        "User-Agent": "Custom"
+                    },
                     body: JSON.stringify({ message: message })
                 });
                 const data = await response.json();
