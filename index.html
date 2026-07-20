@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renewable Energy Monitoring System for Microgrids</title>
+    <title>Renewable Energy Monitoring System for domestic and Microgrids</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -23,7 +23,6 @@
         }
         h1 { color: var(--accent); text-align: center; margin-bottom: 10px; }
         
-        /* New Styles for Navigation Button */
         .nav-container {
             width: 100%;
             max-width: 900px;
@@ -42,16 +41,12 @@
             transition: background 0.2s, transform 0.1s;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
-        .nav-btn:hover {
-            background: #2563eb;
-        }
-        .nav-btn:active {
-            transform: scale(0.98);
-        }
+        .nav-btn:hover { background: #2563eb; }
+        .nav-btn:active { transform: scale(0.98); }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
             width: 100%;
             max-width: 900px;
@@ -113,14 +108,13 @@
 </head>
 <body>
 
-    <h1>Renewable Energy Monitoring System for Microgrids</h1>
+    <h1>Renewable Energy Monitoring System for domestic and Microgrids</h1>
     
-    <!-- Navigation Container with Automation Link -->
     <div class="nav-container">
-        <a href="automation.html" class="nav-btn">Go to Automation Panel →</a>
+        <a href="/automation" class="nav-btn">Go to Automation Panel →</a>
     </div>
     
-    <!-- Dashboard Cards -->
+    <!-- Dashboard Cards Grid (Expanded with Domestic Smart-Grid Additions) -->
     <div class="grid">
         <div class="card">
             <h3>Voltage</h3>
@@ -138,13 +132,23 @@
             <h3>Battery Status</h3>
             <p id="status" style="font-size: 1.5rem;">Connecting...</p>
         </div>
+        <!-- Domestic Addition 1: Net Metering Grid Tie -->
+        <div class="card" style="border-bottom: 4px solid #3b82f6;">
+            <h3>Grid Net Metering</h3>
+            <p id="gridExchange" style="font-size: 1.5rem;">0.0 W</p>
+        </div>
+        <!-- Domestic Addition 2: Smart Solar Excess Load Diversion -->
+        <div class="card" style="border-bottom: 4px solid #22c55e;">
+            <h3>Solar Diversion</h3>
+            <p id="diversionMode" style="font-size: 1.5rem;">Monitoring...</p>
+        </div>
     </div>
 
     <!-- AI Chat Interface -->
     <h2>AI Microgrid Assistant</h2>
     <div class="chat-container">
         <div class="chat-box" id="chatBox">
-            <div class="msg ai">Hello! I see live updates from your MPPT controller. Ask me anything about your microgrid system performance.</div>
+            <div class="msg ai">Hello! I see live updates from your domestic & microgrid controllers. Ask me anything about your balance profile or automated load shedding rules.</div>
         </div>
         <div class="input-area">
             <input type="text" id="userInput" placeholder="Ask AI about your microgrid power production..." onkeypress="if(event.key==='Enter') sendMessage()">
@@ -153,7 +157,6 @@
     </div>
 
     <script>
-        // Adjust this URL to point to your Flask server's IP address
         const BACKEND_URL = "http://localhost:5000";
 
         // Fetch Live telemetry every 3 seconds
@@ -166,6 +169,14 @@
                 document.getElementById('curr').innerText = data.current + " A";
                 document.getElementById('power').innerText = data.power + " W";
                 document.getElementById('status').innerText = data.battery_status;
+                
+                // Parsing new Domestic Parameters safely
+                const exchangeVal = data.grid_exchange || 0.0;
+                document.getElementById('gridExchange').innerText = exchangeVal >= 0 
+                    ? `Export: ${exchangeVal}W` 
+                    : `Import: ${Math.abs(exchangeVal)}W`;
+                
+                document.getElementById('diversionMode').innerText = data.solar_diversion || "Idle";
             } catch (err) {
                 console.error("Failed to connect to Flask backend:", err);
                 document.getElementById('status').innerText = "Offline";
@@ -181,7 +192,6 @@
             appendMessage(message, 'user');
             inputEl.value = '';
 
-            // Add placeholder loading message for AI
             const loadingId = appendMessage("AI is thinking...", 'ai');
 
             try {
@@ -191,8 +201,6 @@
                     body: JSON.stringify({ message: message })
                 });
                 const data = await response.json();
-                
-                // Replace placeholder text with real answer
                 document.getElementById(loadingId).innerText = data.reply;
             } catch (err) {
                 document.getElementById(loadingId).innerText = "Error: Couldn't reach backend.";
