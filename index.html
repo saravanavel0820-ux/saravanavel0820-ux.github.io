@@ -21,214 +21,205 @@
             flex-direction: column;
             align-items: center;
         }
-        h1 { color: var(--accent); text-align: center; margin-bottom: 10px; }
-        
-        .nav-container {
+        .header-container {
             width: 100%;
             max-width: 900px;
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
-        .nav-btn {
-            display: inline-block;
-            background: #3b82f6;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            cursor: pointer;
-            border: none;
-        }
-        .nav-btn:hover { background: #2563eb; }
-        .nav-btn:active { transform: scale(0.98); }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 900px;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
             margin-bottom: 30px;
         }
-        .card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            border-bottom: 4px solid var(--accent);
-        }
-        .card h3 { margin: 0 0 10px 0; color: #94a3b8; }
-        .card p { margin: 0; font-size: 2rem; font-weight: bold; }
+        h1 { color: var(--accent); margin: 0; font-size: 1.8rem; max-width: 80%; }
         
-        .chat-container {
-            width: 100%;
-            max-width: 900px;
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 400px;
-        }
-        .chat-box {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .msg { padding: 10px 14px; border-radius: 8px; max-width: 75%; }
-        .user { background: #3b82f6; align-self: flex-end; }
-        .ai { background: #334155; align-self: flex-start; }
-        
-        .input-area {
-            display: flex;
-            border-top: 1px solid #334155;
-        }
-        .input-area input {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            background: #0f172a;
-            color: white;
-            outline: none;
-        }
-        .input-area button {
-            padding: 0 25px;
-            background: var(--accent);
+        .login-icon-btn {
+            background: none;
             border: none;
             cursor: pointer;
-            font-weight: bold;
+            color: var(--text);
+            padding: 8px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
+        .login-icon-btn:hover {
+            transform: scale(1.05);
+            background-color: #334155;
+        }
+        
+        .content-layout {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        @media(min-width: 768px) {
+            .content-layout { grid-template-columns: 1.2fr 1fr; }
+        }
+        
+        .about-panel {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            line-height: 1.6;
+        }
+        .about-panel h2 { color: var(--accent); margin-top: 0; font-size: 1.4rem; }
+        .about-panel p { color: #cbd5e1; }
+        .features-list { margin-top: 15px; padding-left: 20px; color: #cbd5e1; }
+        .features-list li { margin-bottom: 10px; }
+
+        .image-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .image-panel img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #334155;
+        }
+        .img-caption {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        /* Simple Modal Backdrop styling for Login */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+        }
+        .modal-content h3 { margin-top: 0; color: var(--accent); text-align: center; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 0.9rem; color: #94a3b8; }
+        .form-group input {
+            padding: 12px; background: #0f172a; border: 1px solid #334155;
+            border-radius: 6px; color: white; outline: none;
+        }
+        .form-group input:focus { border-color: var(--accent); }
+        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .modal-btn {
+            flex: 1; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none;
+        }
+        .btn-submit { background: var(--accent); color: #0f172a; }
+        .btn-cancel { background: #475569; color: white; }
     </style>
 </head>
 <body>
 
-    <h1>Renewable Energy Monitoring System for domestic and Microgrids</h1>
-    
-    <div class="nav-container">
-        <button onclick="verifyProductAccess()" class="nav-btn">Go to Automation Panel →</button>
+    <div class="header-container">
+        <h1>Renewable Energy Monitoring System for domestic and Microgrids</h1>
+        <!-- Login Avatar Button Component -->
+        <button class="login-icon-btn" onclick="openLoginModal()" title="Secure Portal Sign In">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        </button>
     </div>
-    
-    <div class="grid">
-        <div class="card">
-            <h3>Voltage</h3>
-            <p id="volt">0.0 V</p>
+
+    <div class="content-layout">
+        <!-- About Section -->
+        <div class="about-panel">
+            <h2>Project Overview</h2>
+            <p>Our project provides a comprehensive solution for managing local green power generation, specifically targeted toward hybrid domestic settings and decentralized community microgrids.</p>
+            <p>By interfacing physical power sensors (Voltage, Current, Battery banks) with an automated relay system, this architecture balances safety, self-consumption optimization, and cost savings.</p>
+            
+            <h3>Key Operations</h3>
+            <ul class="features-list">
+                <li><strong>Real-Time Analytics:</strong> Live status checking of household generation, net-metering balance updates, and deep-cycle storage reserves.</li>
+                <li><strong>Dynamic Load Automation:</strong> Smart relay modules capable of dropping non-essential loads (like climate control units) when battery state drops.</li>
+                <li><strong>Integrated Edge AI:</strong> local LLM assistant contextualized with live microgrid status registers for handling power shedding requests.</li>
+            </ul>
         </div>
-        <div class="card">
-            <h3>Current</h3>
-            <p id="curr">0.0 A</p>
-        </div>
-        <div class="card">
-            <h3>Power Output</h3>
-            <p id="power">0.0 W</p>
-        </div>
-        <div class="card">
-            <h3>Battery Status</h3>
-            <p id="status" style="font-size: 1.5rem;">Connecting...</p>
-        </div>
-        <div class="card" style="border-bottom: 4px solid #3b82f6;">
-            <h3>Grid Net Metering</h3>
-            <p id="gridExchange" style="font-size: 1.5rem;">0.0 W</p>
-        </div>
-        <div class="card" style="border-bottom: 4px solid #22c55e;">
-            <h3>Solar Diversion</h3>
-            <p id="diversionMode" style="font-size: 1.5rem;">Monitoring...</p>
+
+        <!-- Image Schematic Section -->
+        <div class="image-panel">
+            <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTLb9q93sXVe0Vxcxyb9V-zqSE5bafv5aKEsVUrCYaJr0I9MQWvn3N-C8l6CZWgtrykq7ifvpfGT3zv6vs" alt="Domestic Microgrid Operational Schematic Block Diagram">
+            <div class="img-caption">Figure 1.1: Functional Infrastructure Flow for Microgrids</div>
         </div>
     </div>
 
-    <h2>AI Microgrid Assistant</h2>
-    <div class="chat-container">
-        <div class="chat-box" id="chatBox">
-            <div class="msg ai">Hello! I see live updates from your domestic & microgrid controllers. Ask me anything about your balance profile or automated load shedding rules.</div>
-        </div>
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="Ask AI about your microgrid power production..." onkeypress="if(event.key==='Enter') sendMessage()">
-            <button onclick="sendMessage()">Send</button>
+    <!-- Login Authentication Modal Overlay -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h3>Console Authorization</h3>
+            <div class="form-group">
+                <label for="productId">Microgrid Product ID</label>
+                <input type="text" id="productId" placeholder="Enter 6-digit number">
+            </div>
+            <div class="form-group">
+                <label for="password">Security Password</label>
+                <input type="password" id="password" placeholder="••••••••">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" onclick="closeLoginModal()">Cancel</button>
+                <button class="modal-btn btn-submit" onclick="submitLogin()">Authorize</button>
+            </div>
         </div>
     </div>
 
     <script>
         const BACKEND_URL = "http://localhost:5000";
 
-        function verifyProductAccess() {
-            const correctProductNumber = "948992";
-            const userInput = prompt("Access Restricted: Please enter the 6-digit Product Number to open the Automation Panel:");
-            
-            if (userInput === null) return; 
-
-            if (userInput.trim() === correctProductNumber) {
-                window.location.href = "/automation";
-            } else {
-                alert("🔒 Access Denied: Invalid Product Number.");
-            }
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
         }
 
-        async function fetchTelemetry() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/dashboard`);
-                const data = await response.json();
-                
-                document.getElementById('volt').innerText = data.voltage + " V";
-                document.getElementById('curr').innerText = data.current + " A";
-                document.getElementById('power').innerText = data.power + " W";
-                document.getElementById('status').innerText = data.battery_status;
-                
-                const exchangeVal = data.grid_exchange || 0.0;
-                document.getElementById('gridExchange').innerText = exchangeVal >= 0 
-                    ? `Export: ${exchangeVal}W` 
-                    : `Import: ${Math.abs(exchangeVal)}W`;
-                
-                document.getElementById('diversionMode').innerText = data.solar_diversion || "Idle";
-            } catch (err) {
-                console.error("Failed to connect to Flask backend:", err);
-                document.getElementById('status').innerText = "Offline";
-            }
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('productId').value = '';
+            document.getElementById('password').value = '';
         }
 
-        async function sendMessage() {
-            const inputEl = document.getElementById('userInput');
-            const message = inputEl.value.trim();
-            if (!message) return;
-
-            appendMessage(message, 'user');
-            inputEl.value = '';
-
-            const loadingId = appendMessage("AI is thinking...", 'ai');
+        async function submitLogin() {
+            const pId = document.getElementById('productId').value.trim();
+            const pWd = document.getElementById('password').value.trim();
 
             try {
-                const response = await fetch(`${BACKEND_URL}/api/chat`, {
+                const response = await fetch(`${BACKEND_URL}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: message })
+                    body: JSON.stringify({ product_id: pId, password: pWd })
                 });
                 const data = await response.json();
-                document.getElementById(loadingId).innerText = data.reply;
-            } catch (err) {
-                document.getElementById(loadingId).innerText = "Error: Couldn't reach backend.";
+
+                if (response.status === 200 && data.status === "success") {
+                    window.location.href = "/dashboard";
+                } else {
+                    alert("🔒 Security Error: Access Denied. Invalid Product Credentials.");
+                }
+            } catch(e) {
+                alert("Network Fault: Verify your Flask backend app server is listening.");
             }
         }
-
-        function appendMessage(text, sender) {
-            const chatBox = document.getElementById('chatBox');
-            const msgDiv = document.createElement('div');
-            const id = 'msg-' + Date.now();
-            msgDiv.id = id;
-            msgDiv.className = `msg ${sender}`;
-            msgDiv.innerText = text;
-            chatBox.appendChild(msgDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-            return id;
-        }
-
-        setInterval(fetchTelemetry, 3000);
-        fetchTelemetry();
     </script>
 </body>
 </html>
