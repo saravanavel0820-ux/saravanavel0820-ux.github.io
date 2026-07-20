@@ -40,6 +40,8 @@
             font-weight: bold;
             transition: background 0.2s, transform 0.1s;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border: none;
         }
         .nav-btn:hover { background: #2563eb; }
         .nav-btn:active { transform: scale(0.98); }
@@ -111,10 +113,9 @@
     <h1>Renewable Energy Monitoring System for domestic and Microgrids</h1>
     
     <div class="nav-container">
-        <a href="/automation" class="nav-btn">Go to Automation Panel →</a>
+        <button onclick="verifyProductAccess()" class="nav-btn">Go to Automation Panel →</button>
     </div>
     
-    <!-- Dashboard Cards Grid (Expanded with Domestic Smart-Grid Additions) -->
     <div class="grid">
         <div class="card">
             <h3>Voltage</h3>
@@ -132,19 +133,16 @@
             <h3>Battery Status</h3>
             <p id="status" style="font-size: 1.5rem;">Connecting...</p>
         </div>
-        <!-- Domestic Addition 1: Net Metering Grid Tie -->
         <div class="card" style="border-bottom: 4px solid #3b82f6;">
             <h3>Grid Net Metering</h3>
             <p id="gridExchange" style="font-size: 1.5rem;">0.0 W</p>
         </div>
-        <!-- Domestic Addition 2: Smart Solar Excess Load Diversion -->
         <div class="card" style="border-bottom: 4px solid #22c55e;">
             <h3>Solar Diversion</h3>
             <p id="diversionMode" style="font-size: 1.5rem;">Monitoring...</p>
         </div>
     </div>
 
-    <!-- AI Chat Interface -->
     <h2>AI Microgrid Assistant</h2>
     <div class="chat-container">
         <div class="chat-box" id="chatBox">
@@ -159,7 +157,19 @@
     <script>
         const BACKEND_URL = "http://localhost:5000";
 
-        // Fetch Live telemetry every 3 seconds
+        function verifyProductAccess() {
+            const correctProductNumber = "948992";
+            const userInput = prompt("Access Restricted: Please enter the 6-digit Product Number to open the Automation Panel:");
+            
+            if (userInput === null) return; 
+
+            if (userInput.trim() === correctProductNumber) {
+                window.location.href = "/automation";
+            } else {
+                alert("🔒 Access Denied: Invalid Product Number.");
+            }
+        }
+
         async function fetchTelemetry() {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/dashboard`);
@@ -170,7 +180,6 @@
                 document.getElementById('power').innerText = data.power + " W";
                 document.getElementById('status').innerText = data.battery_status;
                 
-                // Parsing new Domestic Parameters safely
                 const exchangeVal = data.grid_exchange || 0.0;
                 document.getElementById('gridExchange').innerText = exchangeVal >= 0 
                     ? `Export: ${exchangeVal}W` 
@@ -183,7 +192,6 @@
             }
         }
 
-        // Send message to local Ollama via backend
         async function sendMessage() {
             const inputEl = document.getElementById('userInput');
             const message = inputEl.value.trim();
@@ -219,7 +227,6 @@
             return id;
         }
 
-        // Poll for updates
         setInterval(fetchTelemetry, 3000);
         fetchTelemetry();
     </script>

@@ -70,7 +70,6 @@
         .label { font-size: 1.1rem; font-weight: 500; }
         .sub-label { font-size: 0.85rem; color: #94a3b8; margin-top: 2px; }
         
-        /* Badges */
         .priority-badge {
             font-size: 0.75rem;
             padding: 2px 6px;
@@ -84,7 +83,6 @@
         .med { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
         .low { background: rgba(34, 197, 94, 0.2); color: var(--accent); }
 
-        /* Modern Toggle Switch Design */
         .switch {
             position: relative;
             display: inline-block;
@@ -109,9 +107,7 @@
         .status-text {
             font-size: 0.85rem; font-weight: bold; margin-top: 4px; text-align: right; color: #64748b;
         }
-        input:checked ~ .status-text { color: var(--accent); }
 
-        /* Emergency Block */
         .emergency-btn {
             width: 100%;
             background: var(--danger);
@@ -126,7 +122,6 @@
         }
         .emergency-btn:hover { opacity: 0.9; }
 
-        /* Metric Item */
         .metric-item {
             display: flex;
             justify-content: space-between;
@@ -138,15 +133,13 @@
 </head>
 <body>
 
-    <a href="index.html" class="nav-btn">← Back to Dashboard Overview</a>
+    <a href="/" class="nav-btn">← Back to Dashboard Overview</a>
     <h1>Microgrid Smart Automation Panel</h1>
     
     <div class="container">
-        <!-- Main Relay Controls -->
         <div class="panel">
             <h2>Dynamic Load Management</h2>
             
-            <!-- Switch 1 -->
             <div class="row">
                 <div class="label-group">
                     <span class="label">Living Room Essential Lighting</span>
@@ -155,14 +148,13 @@
                 </div>
                 <div>
                     <label class="switch">
-                        <input type="checkbox" id="lightSwitch" checked onchange="toggleState('lightSwitch', 'lightStatus')">
+                        <input type="checkbox" id="living_room_light" onchange="toggleRelayBackend('living_room_light', 'lightStatus')">
                         <span class="slider"></span>
                     </label>
-                    <div id="lightStatus" class="status-text" style="color: var(--accent);">ACTIVE / ON</div>
+                    <div id="lightStatus" class="status-text">SHEDDED / OFF</div>
                 </div>
             </div>
 
-            <!-- Switch 2 -->
             <div class="row">
                 <div class="label-group">
                     <span class="label">Kitchen Ventilation HVAC</span>
@@ -171,14 +163,13 @@
                 </div>
                 <div>
                     <label class="switch">
-                        <input type="checkbox" id="fanSwitch" onchange="toggleState('fanSwitch', 'fanStatus')">
+                        <input type="checkbox" id="kitchen_fan" onchange="toggleRelayBackend('kitchen_fan', 'fanStatus')">
                         <span class="slider"></span>
                     </label>
                     <div id="fanStatus" class="status-text">SHEDDED / OFF</div>
                 </div>
             </div>
 
-            <!-- Switch 3 -->
             <div class="row">
                 <div class="label-group">
                     <span class="label">Master Bedroom Climate Unit</span>
@@ -187,14 +178,13 @@
                 </div>
                 <div>
                     <label class="switch">
-                        <input type="checkbox" id="acSwitch" onchange="toggleState('acSwitch', 'acStatus')">
+                        <input type="checkbox" id="bedroom_ac" onchange="toggleRelayBackend('bedroom_ac', 'acStatus')">
                         <span class="slider"></span>
                     </label>
                     <div id="acStatus" class="status-text">SHEDDED / OFF</div>
                 </div>
             </div>
             
-            <!-- Switch 4 -->
             <div class="row">
                 <div class="label-group">
                     <span class="label">Deep Well Water Pump</span>
@@ -203,7 +193,7 @@
                 </div>
                 <div>
                     <label class="switch">
-                        <input type="checkbox" id="pumpSwitch" onchange="toggleState('pumpSwitch', 'pumpStatus')">
+                        <input type="checkbox" id="deep_well_pump" onchange="toggleRelayBackend('deep_well_pump', 'pumpStatus')">
                         <span class="slider"></span>
                     </label>
                     <div id="pumpStatus" class="status-text">SHEDDED / OFF</div>
@@ -211,9 +201,7 @@
             </div>
         </div>
 
-        <!-- Sidebar Automation Configurations -->
         <div style="display: flex; flex-direction: column; gap: 20px;">
-            <!-- Automation Rules -->
             <div class="panel">
                 <h2>Intelligent SoC Triggers</h2>
                 <div class="metric-item">
@@ -230,7 +218,6 @@
                 </div>
             </div>
 
-            <!-- System Overrides -->
             <div class="panel" style="border: 1px solid rgba(239, 68, 68, 0.4);">
                 <h2>Emergency Isolation</h2>
                 <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0;">Instantly trip all connected solid-state relays in the event of thermal runaway or hardware faults.</p>
@@ -240,10 +227,37 @@
     </div>
 
     <script>
-        function toggleState(checkboxId, statusId) {
+        const BACKEND_URL = "http://localhost:5000";
+
+        const uiMap = {
+            'living_room_light': 'lightStatus',
+            'kitchen_fan': 'fanStatus',
+            'bedroom_ac': 'acStatus',
+            'deep_well_pump': 'pumpStatus'
+        };
+
+        async function loadCurrentStates() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/automation/switches`);
+                const states = await response.json();
+                
+                Object.keys(states).forEach(switchId => {
+                    const checkbox = document.getElementById(switchId);
+                    if (checkbox) {
+                        checkbox.checked = states[switchId];
+                        updateStatusText(switchId, uiMap[switchId]);
+                    }
+                });
+            } catch (err) {
+                console.error("Failed to sync structural states with Flask:", err);
+            }
+        }
+
+        function updateStatusText(checkboxId, statusId) {
             const checkbox = document.getElementById(checkboxId);
             const statusText = document.getElementById(statusId);
-            
+            if (!checkbox || !statusText) return;
+
             if (checkbox.checked) {
                 statusText.innerText = "ACTIVE / ON";
                 statusText.style.color = "var(--accent)";
@@ -253,18 +267,40 @@
             }
         }
 
-        function emergencyTrip() {
-            const switches = ['lightSwitch', 'fanSwitch', 'acSwitch', 'pumpSwitch'];
-            const statuses = ['lightStatus', 'fanStatus', 'acStatus', 'pumpStatus'];
-            
-            switches.forEach((sw, idx) => {
-                const checkbox = document.getElementById(sw);
-                checkbox.checked = false;
-                toggleState(sw, statuses[idx]);
-            });
-            
-            alert("EMERGENCY OVERRIDE: All microgrid relays successfully opened.");
+        async function toggleRelayBackend(switchId, statusId) {
+            updateStatusText(switchId, statusId);
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/automation/toggle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ switch_id: switchId })
+                });
+                const data = await response.json();
+                
+                if (data.status === "success") {
+                    document.getElementById(switchId).checked = data.state;
+                    updateStatusText(switchId, statusId);
+                }
+            } catch (err) {
+                console.error("Transmission fault communicating switch toggle states:", err);
+            }
         }
+
+        async function emergencyTrip() {
+            const switches = Object.keys(uiMap);
+            
+            for (let sw of switches) {
+                const checkbox = document.getElementById(sw);
+                if (checkbox && checkbox.checked) {
+                    checkbox.checked = false;
+                    await toggleRelayBackend(sw, uiMap[sw]);
+                }
+            }
+            alert("EMERGENCY OVERRIDE: Isolation commands successfully deployed to backend.");
+        }
+
+        window.onload = loadCurrentStates;
     </script>
 </body>
 </html>
