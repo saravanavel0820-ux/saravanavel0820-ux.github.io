@@ -48,7 +48,6 @@
             .main-dashboard-grid { grid-template-columns: 1.2fr 1fr; }
         }
 
-        /* Telemetry Section Styling */
         .telemetry-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -66,7 +65,6 @@
         .metric-card h4 { margin: 0 0 5px 0; color: #94a3b8; font-size: 0.9rem; }
         .metric-card p { margin: 0; font-size: 1.5rem; font-weight: bold; }
 
-        /* Automation Styling */
         .panel {
             background: var(--card-bg);
             padding: 20px;
@@ -113,7 +111,6 @@
             padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer;
         }
 
-        /* AI Container Styling */
         .chat-container {
             background: var(--card-bg);
             border-radius: 12px;
@@ -138,13 +135,11 @@
 
     <div class="top-row">
         <h2 style="margin:0; color:var(--accent);">Active Microgrid Operating Console</h2>
-        <button class="logout-btn" onclick="window.location.href='/'">Disconnect Station</button>
+        <button class="logout-btn" onclick="window.location.href=window.location.href.includes('github.io') ? 'index.html' : '/'">Disconnect Station</button>
     </div>
 
     <div class="main-dashboard-grid">
-        <!-- Left Column: Metrics & Automation Switches -->
         <div>
-            <!-- Hardware Metrics Layout -->
             <div class="telemetry-grid">
                 <div class="metric-card">
                     <h4>Voltage</h4>
@@ -172,7 +167,6 @@
                 </div>
             </div>
 
-            <!-- Load Management Relays -->
             <div class="panel">
                 <h2>Dynamic Load Automation Control</h2>
                 
@@ -233,14 +227,12 @@
                 </div>
             </div>
 
-            <!-- Emergency Safety Interruption -->
             <div class="emergency-block">
                 <h3 style="margin:0; font-size:1.1rem; color:var(--danger);">System Safety Interconnect</h3>
                 <button class="emergency-btn" onclick="killAllRelays()">SYSTEM MASS BLACKOUT TRIP</button>
             </div>
         </div>
 
-        <!-- Right Column: Conversational AI Monitor -->
         <div class="chat-container">
             <div class="chat-header">AI Co-Pilot Assistant</div>
             <div class="chat-box" id="chatBox">
@@ -254,7 +246,8 @@
     </div>
 
     <script>
-        const BACKEND_URL = "http://localhost:5000";
+        // CHANGE THIS IP TO MATCH YOUR LAPTOP'S IP ADDRESS:
+        const BACKEND_URL = "http://192.168.43.125:5000";
         const uiElements = {
             'living_room_light': 'lStatus',
             'kitchen_fan': 'kStatus',
@@ -365,7 +358,6 @@
             return id;
         }
 
-        // Initialize and schedule loops
         syncSwitches();
         setInterval(fetchTelemetry, 3000);
         fetchTelemetry();

@@ -98,7 +98,6 @@
             text-align: center;
         }
 
-        /* Simple Modal Backdrop styling for Login */
         .modal {
             display: none;
             position: fixed;
@@ -136,7 +135,6 @@
 
     <div class="header-container">
         <h1>Renewable Energy Monitoring System for domestic and Microgrids</h1>
-        <!-- Login Avatar Button Component -->
         <button class="login-icon-btn" onclick="openLoginModal()" title="Secure Portal Sign In">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -146,7 +144,6 @@
     </div>
 
     <div class="content-layout">
-        <!-- About Section -->
         <div class="about-panel">
             <h2>Project Overview</h2>
             <p>Our project provides a comprehensive solution for managing local green power generation, specifically targeted toward hybrid domestic settings and decentralized community microgrids.</p>
@@ -160,14 +157,12 @@
             </ul>
         </div>
 
-        <!-- Image Schematic Section -->
         <div class="image-panel">
             <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTLb9q93sXVe0Vxcxyb9V-zqSE5bafv5aKEsVUrCYaJr0I9MQWvn3N-C8l6CZWgtrykq7ifvpfGT3zv6vs" alt="Domestic Microgrid Operational Schematic Block Diagram">
             <div class="img-caption">Figure 1.1: Functional Infrastructure Flow for Microgrids</div>
         </div>
     </div>
 
-    <!-- Login Authentication Modal Overlay -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <h3>Console Authorization</h3>
@@ -187,7 +182,8 @@
     </div>
 
     <script>
-        const BACKEND_URL = "http://localhost:5000";
+        // CHANGE THIS IP TO MATCH YOUR LAPTOP'S IP ADDRESS:
+        const BACKEND_URL = "http://192.168.43.125:5000";
 
         function openLoginModal() {
             document.getElementById('loginModal').style.display = 'flex';
@@ -212,12 +208,13 @@
                 const data = await response.json();
 
                 if (response.status === 200 && data.status === "success") {
-                    window.location.href = "/dashboard";
+                    // Routes to dashboard dynamically relative to current host
+                    window.location.href = window.location.href.includes("github.io") ? "dashboard.html" : "/dashboard";
                 } else {
                     alert("🔒 Security Error: Access Denied. Invalid Product Credentials.");
                 }
             } catch(e) {
-                alert("Network Fault: Verify your Flask backend app server is listening.");
+                alert(`Network Fault: Could not connect to backend at ${BACKEND_URL}. Check your laptop IP.`);
             }
         }
     </script>
